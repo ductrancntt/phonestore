@@ -8,14 +8,18 @@
   <title>Login</title>
 </head>
 <body>
-  Username <input >
+  <span id="err" style="display:none; color: red">Tài khoản hoặc mật khẩu không chính xác</span><br>
+  Username <input id="username">
   <br>
-  Password <input>
+  Password <input id="password" type="password">
   <br>
-  <input type="button" value="Login">
+  <input type="button" onclick="login()" value="Login">
+  <input type="button" onclick="register()" value="Register">
   <script>
+  function login(){
     var fd = new FormData();    
-    fd.append( 'username', "hello" );
+    fd.append( 'username', $('#username').val().trim() );
+    fd.append( 'password', $('#password').val().trim() );
     $.ajax({
       url: 'service/login.php',
       type: 'POST',
@@ -23,9 +27,17 @@
       processData: false,
       contentType: false,
       success: function(data){
-        console.log(data);
+        if(data){
+          window.location.href = "/home.php";
+        }else{
+          $('#err').css("display","block");
+        }
       }
     })
+  }
+  function register(){
+    
+  }
   </script>
 </body>
 </html>
