@@ -1,3 +1,3 @@
 <?php
-	echo "NULL";
+	header("location:./home.php");
 ?>
