@@ -1,0 +1,76 @@
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Revenue Charts</h1>
+    </div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="input-group mb-0 col-md-5 shadow" style="padding-left: 0px; padding-right: 0px;">
+            <input type="text" id="date-range-picker" class="form-control font-responsive" placeholder="Date Range" style="text-align: center;">
+            <div class="input-group-append">
+                <button class="btn btn-primary font-responsive" type="button" style="width: 100px;" id="analyze-button">
+                    <i class="fas fa-chart-line"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xl-8 col-lg-7">
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Ha Noi Store Revenue</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="ha-noi-revenue"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Sold Products Proportion</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar pt-4 pb-2">
+                        <canvas id="sold-proportion"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Ho Chi Minh Store Revenue</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="ho-chi-minh-revenue"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Revenue Proportion</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar pt-4 pb-2">
+                        <canvas id="revenue-proportion"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.getScript("/js/admin/revenue/revenue.js");
+</script>

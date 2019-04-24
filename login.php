@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="jquery-1.9.0.min.js"></script>
+  <script src="/libs/jquery/jquery-3.3.1.min.js"></script>
   <title>Login</title>
 </head>
 <body>

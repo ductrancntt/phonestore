@@ -1,0 +1,179 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3 row">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-user"></i>
+            <span> EMPLOYEES</span>
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="input-group mb-3 col-md-6">
+                <input type="text" class="form-control font-responsive" placeholder="Employee Name"
+                       id="employee-search-input">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary font-responsive" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <span id="selected-store-employee-tab" data-id="0">All Stores</span>
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu font-responsive" id="stores-employee-tab">
+                    </div>
+                    <button class="btn btn-primary font-responsive" type="button" style="width: 100px;"
+                            id="search-employee-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-outline-primary font-responsive" type="button" style="float: right;"
+                        id="employee-refresh-button">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>REFRESH</span>
+                </button>
+                <button class="btn btn-success font-responsive" type="button"
+                        style="float: right; margin-right: 15px;"
+                        data-toggle="modal"
+                        data-target="#employee-modal">
+                    <i class="fas fa-plus"></i>
+                    <span>ADD EMPLOYEE</span>
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover" id="employee-table" width="100%" cellspacing="0">
+                <thead class="table-header">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Store</th>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="employee-modal" tabindex="-1" role="dialog"
+     aria-labelledby="employeeModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title modal-title-font" id="employee-modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="account-field">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text input-title">Username</span>
+                        </div>
+                        <input type="text" class="form-control font-responsive" name="username">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text input-title">Password</span>
+                        </div>
+                        <input type="password" class="form-control font-responsive" name="password">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text input-title">Confirm Password</span>
+                        </div>
+                        <input type="password" class="form-control font-responsive"
+                               name="confirm-password">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text input-title">Store</span>
+                        </div>
+                        <select class="form-control font-responsive" id="store-selector-employee-tab"
+                                name="store">
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text input-title">Employee Name</span>
+                    </div>
+                    <input type="text" class="form-control font-responsive" name="employee-name">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text input-title">Phone</span>
+                    </div>
+                    <input type="text" class="form-control font-responsive" name="phone"
+                           pattern="[0-9]{8,12}">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text input-title">Address</span>
+                    </div>
+                    <input type="text" class="form-control font-responsive" name="address">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text input-title">Status</span>
+                    </div>
+                    <select class="form-control font-responsive" id="status-selector-employee-tab"
+                            name="status">
+                        <option value='true'>Activated</option>
+                        <option value='false'>Deactivated</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary font-responsive"
+                        data-dismiss="modal">
+                    <i class="fas fa-ban"></i>
+                    <span>Cancel</span>
+                </button>
+                <button type="button" class="btn btn-success font-responsive" id="save-employee">
+                    <i class="fas fa-save"></i>
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="employee-disable-modal" tabindex="-1" role="dialog"
+     aria-labelledby="employeeDisableModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title modal-title-font">Disable Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body font-responsive">
+                <span>Do you want to disable this employee?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary font-responsive"
+                        data-dismiss="modal">
+                    <i class="fas fa-ban"></i>
+                    <span>Cancel</span>
+                </button>
+                <button type="button" class="btn btn-danger font-responsive" id="disable-employee">
+                    <i class="fas fa-times"></i>
+                    <span>Disable</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.getScript("/js/admin/manage-data/manage-employees.js");
+</script>
