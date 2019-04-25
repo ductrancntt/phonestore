@@ -12,7 +12,9 @@
         $conn->createConnection();
         $result = $conn->excuteQuery($signUpQuery);
         
-        if ($result === true) {
+        echo $result;
+
+        if ($result) {
             header('Content-Type: application/json');
         } else {
             header('HTTP/1.1 500 Internal Server Error');
