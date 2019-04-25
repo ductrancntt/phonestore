@@ -25,6 +25,28 @@
 <?php
     include "navbar.php";
 ?>
+<?php
+    require "./service/Connection.php";
+    $product = null;
+    if(isset($_GET["id"])){
+        $connection = new Connection();
+        $connection->createConnection();
+        $sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id  WHERE p.id = ".$_GET["id"];
+
+        $result = $connection->excuteQuery($sql);
+        
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = $row;
+                break;
+            }
+            $connection->closeConnection();
+
+        } else {
+            $connection->closeConnection();
+        }
+    }
+?>
 <div>
     <section class="section-content bg padding-y-sm">
         <div class="container">
@@ -32,9 +54,8 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="home.html">Home</a></li>
                     <li class="breadcrumb-item"><a
-                            th:href="'/search-products?manufacturers=' + ${product.manufacturer.id}"
-                            th:text="${product.manufacturer.manufacturerName}"></a></li>
-                    <li class="breadcrumb-item active"><span th:text="${product.product.productName}"></span></li>
+                            <?php echo 'href="/search-products?manufacturers='.$product["manufacturer_id"].'"'; ?>><?php echo $product["manufacturer_name"]; ?></a></li>
+                    <li class="breadcrumb-item active"><span><?php echo $product["name"]; ?></span></li>
                 </ol>
             </nav>
 
@@ -47,8 +68,8 @@
                                 <article class="gallery-wrap">
                                     <div class="img-big-wrap">
                                         <div>
-                                            <a th:href="${product.product.url}" data-fancybox="">
-                                                <img th:src="${product.product.url}">
+                                            <a th:href="#" data-fancybox="">
+                                                <?php echo '<img src='.$product["image"].'>'; ?>
                                             </a>
                                         </div>
                                     </div>
@@ -61,34 +82,35 @@
                             </aside>
                             <aside class="col-sm-6">
                                 <article class="card-body">
-                                    <h3 class="title mb-3" th:text="${product.product.productName}"></h3>
+                                    <h3 class="title mb-3"><?php echo $product["name"]; ?></h3>
 
                                     <div class="mb-3">
                                         <var class="price h3 text-warning">
                                             <span>Price: </span>
-                                            <span class="num"
-                                                  th:text="${#numbers.formatDecimal(product.product.price, 0, 'POINT', 0, 'COMMA')} + ' ₫'"></span>
+                                            <span class="num"><?php echo number_format($product["price"])." đ"; ?></span>
                                         </var>
                                     </div>
                                     <dl>
                                         <dt>Description</dt>
-                                        <dd><p th:text="${product.product.description}"></p></dd>
+                                        <dd><p ><?php echo $product["description"]; ?></p></dd>
                                     </dl>
                                     <dl class="row">
                                         <dt class="col-sm-5">Screen Size</dt>
                                         <dd class="col-sm-7">
-                                            <span th:text="${product.product.screenSize}"></span>
+                                            <span ><?php echo $product["screen_size"]; ?></span>
                                             <span> inch</span>
                                         </dd>
 
-                                        <th:block th:each="store : ${product.storeQuantity}">
-                                            <dt class="col-sm-5" th:text="${store.store.storeName}"></dt>
-                                            <dd class="col-sm-7 text-danger font-weight-bold"
-                                                th:if="${store.quantity == 0}">Out of stock
-                                            </dd>
-                                            <dd class="col-sm-7" th:if="${store.quantity != 0}"
-                                                th:text="${store.quantity} + ' pcs'"></dd>
-                                        </th:block>
+                                       
+                                        <dt class="col-sm-5">Quantity</dt>
+                                        <?php
+                                            if($product["quantity"] == 0){
+                                                echo '<dd class="col-sm-7 text-danger font-weight-bold">Out of stock
+                                                    </dd>';
+                                            }else{
+                                                echo '<dd class="col-sm-7">'.$product["quantity"].'</dd>';
+                                            }
+                                        ?>
 
                                         <dt class="col-sm-5">Shipping</dt>
                                         <dd class="col-sm-7">
@@ -145,8 +167,8 @@
                                             </button>
                                             <button type="button" class="btn btn-primary btn-add-to-cart"
                                                     style="width: 60%"
-                                                    th:attr="data-id=${product.product.id}"
-                                                    th:disabled="${!authenticated}">
+                                                    <?php echo 'data-id="'.$_GET["id"].'"'; ?>
+                                                    <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
                                                 <i class='fas fa-cart-plus'></i>
                                                 <span> CART</span>
                                             </button>

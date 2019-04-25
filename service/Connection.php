@@ -19,6 +19,7 @@
 
         public function createConnection() {
             $this->conn = mysqli_connect($this->servername, $this->username, $this->password, $this->schema);
+            mysqli_set_charset($this->conn,"utf8");
         }
 
         public function closeConnection() {
