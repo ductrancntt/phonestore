@@ -21,14 +21,14 @@
             if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] && !$_SESSION['isAdmin']):
         ?>
                     <div class='nav-item'>
-                        <a class='nav-link wish-list-link' href='/customer/wish-list'>
+                        <a class='nav-link wish-list-link' href='./wish-list.php'>
                             <i class='fa fa-heart'></i>
                             <span>WISH LIST</span>
                             <span class='badge badge-pill badge-danger' id='number-wish-list'></span>
                         </a>
                     </div>
                     <div class='nav-item'>
-                        <a class='nav-link admin-link' href='/customer/cart'>
+                        <a class='nav-link admin-link' href='./cart.php'>
                             <i class='fas fa-shopping-cart'></i>
                             <span>CART</span>
                             <span class='badge badge-pill badge-success' id='number-cart'></span>
@@ -76,14 +76,14 @@
                     <?php
                         if (!$_SESSION['isAdmin']):
                     ?>
-                        <a class="dropdown-item" href="/customer/invoices">
+                        <a class="dropdown-item" href="./invoices.php">
                             <i class="fas fa-file-invoice-dollar" style="width: 15px"></i>
                             <span> Purchase History</span>
                         </a>
                     <?php
                         endif;
                     ?>
-                    <a class="dropdown-item" href="/user/setting">
+                    <a class="dropdown-item" href="./user-setting.php">
                         <i class="fas fa-cog" style="width: 15px"></i>
                         <span> Setting</span>
                     </a>
