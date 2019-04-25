@@ -18,7 +18,7 @@
         </div>
 
         <?php
-            if (isset($_SESSION['signedIn']) && $_SESSION['signedIn']):
+            if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] && !$_SESSION['isAdmin']):
         ?>
                     <div class='nav-item'>
                         <a class='nav-link wish-list-link' href='/customer/wish-list'>
@@ -38,6 +38,20 @@
             endif;
         ?>
 
+        <?php
+            if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] && $_SESSION['isAdmin']):
+        ?>
+                <div class='nav-item'>
+                    <a class='nav-link wish-list-link' href='./admin.php'>
+                        <i class="fas fa-user-shield"></i>
+                        <span> ADMIN</span>
+                        <span class='badge badge-pill badge-danger' id='number-wish-list'></span>
+                    </a>
+                </div>
+        <?php
+            endif;
+        ?>
+
         <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle account-link" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-user-circle"></i>
@@ -45,7 +59,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" style="font-size: 0.85rem" aria-labelledby="navbarDropdown">
             <?php
-                if (!isset($_SESSION['signedIn']) || !$_SESSION['signedIn']):
+                if (!(isset($_SESSION['signedIn']) && $_SESSION['signedIn'])):
             ?>
                 <a class="dropdown-item" href="./signin.php">
                     <i class="fas fa-sign-in-alt" style="width: 15px"></i>

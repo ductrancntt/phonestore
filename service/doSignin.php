@@ -31,7 +31,10 @@
                 break;
             }
             $connection->closeConnection();
-            header("location:../home.php");
+            if ($_SESSION['isAdmin'])
+                header("location:../admin.php");
+            else
+                header("location:../home.php");
         } else {
             $connection->closeConnection();
             header("location:../signin.php?error=true");

@@ -1,7 +1,7 @@
 <?php
     class Connection {
     
-        private $servername = 'localhost:3306';
+        private $servername = 'localhost:3307';
         private $schema = "phone_store";
         private $username ="root";
         private $password = "";
