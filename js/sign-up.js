@@ -17,25 +17,17 @@
         let fullname = $("#fullname").val();
 
         let user = {
-            'username': username,
-            'password': password,
-            'phone': phone,
-            'address': address,
-            'name': fullname
+            username: username,
+            password: password,
+            phone: phone,
+            address: address,
+            name: fullname
         }
 
-        $.ajax({
-            type: "POST",
-            url: "/sign-up",
-            data: JSON.stringify(user),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function () {
-                window.location = "../sign.php";
-            },
-            error: function () {
-                $("#username-error").css("display", "");
-            }
+        $.post('./service/doSignUp.php', {user: JSON.stringify(user)}, function(response) {
+            window.location = "./signin.php";
+        }).fail(function() {
+            $("#username-error").css("display", "");
         });
     });
 

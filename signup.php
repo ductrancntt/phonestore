@@ -28,7 +28,7 @@
                     <h5 class="card-title text-center">Sign Up</h5>
                     <h6 id="username-error" class="text-center" style="color: red; margin-bottom: 15px; display: none;">
                         Please choose another name!</h6>
-                    <form class="form-sign-in">
+                    <form if="signup-form" class="form-sign-in">
                         <div class="form-label-group">
                             <input type="text" id="username" name="username" class="form-control" placeholder="Username"
                                    required autofocus>

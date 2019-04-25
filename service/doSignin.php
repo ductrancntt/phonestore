@@ -11,9 +11,11 @@
         $username = $_POST["username"];
         $password = $_POST["password"];
 
-        $sql = "SELECT * FROM user WHERE username = '".$username."' AND password = '".$password."'";
+        // $signInQuery = "SELECT * FROM user WHERE (username = '".$username."' OR email = '".$username."') AND password = '".$password."'";
 
-        $result = $connection->excuteQuery($sql);
+        $signInQuery = "SELECT * FROM user WHERE username = '".$username."' AND password = '".$password."'";
+
+        $result = $connection->excuteQuery($signInQuery);
     
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

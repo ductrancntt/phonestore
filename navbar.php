@@ -59,10 +59,16 @@
                         <i class="fas fa-key" style="width: 15px"></i>
                         <span> Change Password</span>
                     </a>
-                    <a class="dropdown-item" href="/customer/invoices">
-                        <i class="fas fa-file-invoice-dollar" style="width: 15px"></i>
-                        <span> Purchase History</span>
-                    </a>
+                    <?php
+                        if (!$_SESSION['isAdmin']):
+                    ?>
+                        <a class="dropdown-item" href="/customer/invoices">
+                            <i class="fas fa-file-invoice-dollar" style="width: 15px"></i>
+                            <span> Purchase History</span>
+                        </a>
+                    <?php
+                        endif;
+                    ?>
                     <a class="dropdown-item" href="/user/setting">
                         <i class="fas fa-cog" style="width: 15px"></i>
                         <span> Setting</span>
