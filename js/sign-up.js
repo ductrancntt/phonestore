@@ -31,7 +31,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function () {
-                window.location = "/login";
+                window.location = "../sign.php";
             },
             error: function () {
                 $("#username-error").css("display", "");
