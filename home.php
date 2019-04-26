@@ -42,7 +42,7 @@
                         }
                     }
                     $conn->closeConnection();
-                    $link = "./search-result?manufacturers=";
+                    $link = "./search-result.php?manufacturers=";
                     foreach ($manufacturers as $manufacturer) {
                         echo '<div class="col-md-2">
                         <figure class="card card-product" style="height: 80px;">
