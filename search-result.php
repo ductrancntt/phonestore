@@ -74,14 +74,14 @@ $connection->closeConnection();
 
         <nav class="mb-3">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="./home.php">Home</a></li>
                 <li class="breadcrumb-item active">
                     <span>Search Result - </span>
                     <?php
                     if (count($productList) > 1) {
-                        echo '<span>' . count($productList) . ' products</span>';
+                        echo "<span>".count($productList)." products</span>";
                     } else {
-                        echo '<span>' . count($productList) . ' product</span>';
+                        echo "<span>".count($productList)." product</span>";
                     }
                     ?>
 
@@ -137,8 +137,8 @@ $connection->closeConnection();
             <main class="col-sm-9">
                 <?php
                 if (count($productList) == 0) {
-                    echo '<div style="padding - top: 50px; display: flex; justify - content: center;">
-                        <span class="h3 text - warning"><i class="fas fa - exclamation - circle"></i> NO PRODUCT WAS FOUND!</span>
+                    echo '<div style="padding-top: 50px; display: flex; justify-content: center;">
+                        <span class="h3 text-warning"><i class="fas fa-exclamation-circle"></i> NO PRODUCT WAS FOUND!</span>
                     </div>';
                 }
                 ?>
@@ -153,7 +153,7 @@ $connection->closeConnection();
                                     </div>
                                 </aside>
                                 <article class="col-sm-6">
-                                    <a class="title h4" href="/product/' . $product["id"] . '">' . $product["name"] . '</a>
+                                    <a class="title h4" href="./product/' . $product["id"] . '">' . $product["name"] . '</a>
                                     <div class="rating-wrap mb-2">
                                         <ul class="rating-stars">
                                             <li style="width: 100%" class="stars-active">
