@@ -19,9 +19,12 @@ if(isset($_GET["id"])){
         }
         if(!$isExist){
             array_push($userCart, ["id"=>$_GET["id"], "quantity" => 1]);
+            echo "1";
+        }else{
+            echo $sum;
         }
         $_SESSION["userCart"] = $userCart;
-        echo $sum;
+
     }
 }
 

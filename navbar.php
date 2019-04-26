@@ -27,7 +27,7 @@
                 <a class='nav-link admin-link' href='./cart.php'>
                     <i class='fas fa-shopping-cart'></i>
                     <span>CART</span>
-                    <span class='badge badge-pill badge-success' id='number-cart'>
+
                         <?php
                         if (isset($_SESSION['userCart']) && count($_SESSION['userCart'])){
                             $sum = 0;
@@ -35,10 +35,12 @@
                                 $sum += $item["quantity"];
                             }
                             if($sum > 0)
-                                echo $sum;
+                                echo "<span class='badge badge-pill badge-success' id='number-cart'>".$sum."</span>";
+                            else{
+                                echo "<span class='badge badge-pill badge-success' id='number-cart'></span>";
+                            }
                         }
                         ?>
-                    </span>
                 </a>
             </div>
         <?php

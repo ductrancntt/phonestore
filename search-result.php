@@ -33,25 +33,28 @@ $productList = array();
 $manufacturerList = array();
 $sql = null;
 $productName = '';
+$manufacturers = '0';
 $connection = new Connection();
 $connection->createConnection();
 if(isset($_GET["productName"])){
-    $productName = isset($_GET["productName"]);
+    $productName = $_GET["productName"];
 }
 if (isset($_GET["manufacturers"])) {
-    $sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id 
-        WHERE p.manufacturer_id IN (" . $_GET["manufacturers"].") AND p.name LIKE '%".$productName."%'";
-} else {
-    $sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id AND p.name LIKE '%".$productName."%'";
+    $manufacturers = $_GET["manufacturers"];
 }
+
+$sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id 
+        WHERE ('".$manufacturers."' = '0' OR p.manufacturer_id IN (" . $manufacturers.")) AND p.name LIKE '%".$productName."%'";
 $result = $connection->excuteQuery($sql);
-$getManufacturerSql = "SELECT * FROM manufacturer";
-$result1 = $connection->excuteQuery($getManufacturerSql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         array_push($productList, $row);
     }
 }
+
+$getManufacturerSql = "SELECT * FROM manufacturer";
+$result1 = $connection->excuteQuery($getManufacturerSql);
+
 if ($result1->num_rows > 0) {
     while ($row = $result1->fetch_assoc()) {
         array_push($manufacturerList, $row);
@@ -153,26 +156,9 @@ $connection->closeConnection();
                                     </div>
                                 </aside>
                                 <article class="col-sm-6">
-                                    <a class="title h4" href="./product/' . $product["id"] . '">' . $product["name"] . '</a>
-                                    <div class="rating-wrap mb-2">
-                                        <ul class="rating-stars">
-                                            <li style="width: 100%" class="stars-active">
-                                                <th:block th:if="${product.avgRating > 0}"
-                                                          th:each="i : ${#numbers.sequence(0, product.avgRating - 1)}">
-                                                    <i class="fa fa-star"></i>
-                                                </th:block>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </li>
-                                        </ul>
-                                        <div class="label-rating" style="padding-left: 10px">1 review</div>
-                                        <div class="label-rating" >1 order</div>
-                                    </div>
+
+                                    <a class="title h4" href="./product-detail.php?id=' . $product["id"] . '">' . $product["name"] . '</a>
+                                    
                                     <p th:text="${product.product.description}"> Description here </p>
                                     <dl class="dlist-align">
                                         <dt>Manufacturer</dt>
