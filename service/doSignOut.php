@@ -6,6 +6,6 @@
         unset($_SESSION['isAdmin']);
         unset($_SESSION['username']);
         unset($_SESSION["userCart"]);
-        header("location:../search-result.php");
+        header("location:../home.php");
     }
 ?>

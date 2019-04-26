@@ -35,7 +35,7 @@
                 header("location:../admin.php");
             else {
                 $_SESSION["userCart"] = array();
-                header("location:../search-result.php");
+                header("location:../home.php");
             }
 
 

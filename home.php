@@ -16,6 +16,8 @@
 <body>
 <?php
     include "navbar.php";
+    require "./service/Connection.php";
+    $conn = new Connection();
 ?>
 <div>
     <div class="banner">
@@ -29,20 +31,32 @@
                 <h4 class="title-section bg text-uppercase">BRANDS</h4>
             </header>
             <div class="row-sm">
-                <!-- <th:block th:each="manufacturer : ${manufacturers}"> -->
-                    <div class="col-md-2">
+                <?php
+                    $conn->createConnection();
+                    $getManufacturersQuery = "SELECT * FROM manufacturer";
+                    $result = $conn->excuteQuery($getManufacturersQuery);
+                    $manufacturers = array();
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            array_push($manufacturers, $row);
+                        }
+                    }
+                    $conn->closeConnection();
+                    $link = "./search-result?manufacturers=";
+                    foreach ($manufacturers as $manufacturer) {
+                        echo '<div class="col-md-2">
                         <figure class="card card-product" style="height: 80px;">
                             <div class="img-wrap">
-                                <img th:src="${manufacturer.url}">
-                                <a class="btn-overlay"
-                                   th:href="'/search-products?manufacturers=' + ${manufacturer.id}">
+                                <img src="'.$manufacturer['image'].'">
+                                <a class="btn-overlay" href="'.$link.$manufacturer['id'].'">
                                     <i class="fas fa-search"></i>
                                     <span> Show products</span>
                                 </a>
                             </div>
                         </figure>
-                    </div>
-                <!-- </th:block> -->
+                    </div>';
+                    }
+                 ?>
             </div>
         </div>
     </section>
