@@ -7,7 +7,7 @@ if (!isset($_SESSION))
 <html>
 <head>
     <?php
-    include "header.php";
+    include_once "header.php";
     ?>
 
     <title>Search Result</title>
@@ -28,37 +28,46 @@ if (!isset($_SESSION))
 include "navbar.php";
 ?>
 <?php
-require "./service/Connection.php";
+require_once "./service/Connection.php";
 $productList = array();
+$manufacturerList = array();
 $sql = null;
-
+$productName = '';
 $connection = new Connection();
 $connection->createConnection();
+if(isset($_GET["productName"])){
+    $productName = isset($_GET["productName"]);
+}
 if (isset($_GET["manufacturers"])) {
-    $sql = "SELECT *  FROM product p WHERE p.manufacturer_id = " . $_GET["manufacturers"];
+    $sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id 
+        WHERE p.manufacturer_id IN (" . $_GET["manufacturers"].") AND p.name LIKE '%".$productName."%'";
 } else {
-    $sql = "SELECT *  FROM product p";
+    $sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id AND p.name LIKE '%".$productName."%'";
 }
 $result = $connection->excuteQuery($sql);
-
+$getManufacturerSql = "SELECT * FROM manufacturer";
+$result1 = $connection->excuteQuery($getManufacturerSql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         array_push($productList, $row);
     }
-    $connection->closeConnection();
-
-} else {
-    $connection->closeConnection();
 }
+if ($result1->num_rows > 0) {
+    while ($row = $result1->fetch_assoc()) {
+        array_push($manufacturerList, $row);
+    }
+}
+$connection->closeConnection();
 
 ?>
 
-<section>
-    <div class="banner">
-        <img src="./image/banner.jpg" class="banner-image">
-        <span class="banner-text">PHONE SHOP</span>
-    </div>
-</section>
+
+<?php
+    include "banner.php";
+?>
+<!--        <img src="./image/banner.jpg" class="banner-image">-->
+<!--        <span class="banner-text">PHONE SHOP</span>-->
+
 
 <section class="section-content bg padding-y">
     <div class="container">
@@ -100,56 +109,24 @@ if ($result->num_rows > 0) {
                                             <label class="custom-control-label" for="check-all">All Brands</label>
                                         </div>
                                     </li>
-                                    <th:block th:each="manufacturer : ${manufacturers}">
-                                        <li>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input brand-checkbox"
-                                                       th:value="${manufacturer.id}" th:id="${manufacturer.id} + 'm'">
-                                                <label class="custom-control-label"
-                                                       th:text="${manufacturer.manufacturerName}"
-                                                       th:for="${manufacturer.id} + 'm'"></label>
-                                            </div>
-                                        </li>
-                                    </th:block>
+                                    <?php
+                                        foreach ($manufacturerList as $manufacturer){
+                                            echo '<li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input brand-checkbox"
+                                                           value="'.$manufacturer["id"].'" id="'.$manufacturer["id"].'m">
+                                                    <label class="custom-control-label"
+                                                           for="'.$manufacturer["id"].'m">'.$manufacturer["name"].'</label>
+                                                </div>
+                                            </li>';
+                                        }
+                                    ?>
+
                                 </ul>
                             </div>
                         </div>
                     </article>
-                    <article class="card-group-item">
-                        <header class="card-header">
-                            <a href="#" data-toggle="collapse" data-target="#price-range">
-                                <i class="icon-action fa fa-chevron-down"></i>
-                                <h6 class="title">Price Range</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse" id="price-range">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label>From</label>
-                                        <div class="input-group">
-                                            <input class="form-control text-right" min="100000" step="50000"
-                                                   placeholder="Min Price" type="number" id="min-price">
-                                            <div class='input-group-append'>
-                                                <span class='input-group-text font-responsive'>₫</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label>To</label>
-                                        <div class="input-group">
-                                            <input class="form-control text-right" min="1000000" max="100000000"
-                                                   step="50000" placeholder="Max Price" type="number" id="max-price">
-                                            <div class='input-group-append'>
-                                                <span class='input-group-text font-responsive'>₫</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-block btn-outline-danger" id="clear-button">Clear Price</button>
-                            </div>
-                        </div>
-                    </article>
+
                     <article class="card-group-item">
                         <div class="card-body">
                             <button class="btn btn-block btn-primary" id="apply-button">Apply</button>
@@ -199,7 +176,7 @@ if ($result->num_rows > 0) {
                                     <p th:text="${product.product.description}"> Description here </p>
                                     <dl class="dlist-align">
                                         <dt>Manufacturer</dt>
-                                        <dd th:text="${product.manufacturer.manufacturerName}"></dd>
+                                        <dd>'.$product["manufacturer_name"].'</dd>
                                     </dl>
                                     <dl class="dlist-align">
                                         <dt>Screen Size</dt>
@@ -220,19 +197,7 @@ if ($result->num_rows > 0) {
                                         <p class="text-success">Free shipping</p>
                                         <br>
                                         <div style="text-align: center;">
-                                            <button type="button" class="btn wish-list btn-add-to-wish-list"
-                                                    data-toggle="tooltip" data-placement="top" title="Add to Wishlist"
-                                                    data-id="'.$product["id"].'" '.(!isset($_SESSION['signedIn']) ? "disabled" : "").'
-                                                    th:if="${!product.inWishList}">
-                                                <i class="far fa-heart"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-remove-wish-list"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="Remove from Wishlist"
-                                                    data-id="'.$product["id"].'" '.(!isset($_SESSION['signedIn']) ? "disabled" : "").'
-                                                    th:if="${product.inWishList}">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
+                                            
                                             <button type="button" class="btn btn-primary btn-add-to-cart"
                                                     style="width: 60%"
                                                     data-id="'.$product["id"].'" '.(!isset($_SESSION['signedIn']) ? "disabled" : "").'>
@@ -256,6 +221,25 @@ if ($result->num_rows > 0) {
 <?php
 include "footer.php";
 ?>
-<script type="text/javascript" src="/js/search-product.js"></script>
+<script>
+    $("button.btn.btn-primary.btn-add-to-cart").click(function () {
+
+        let productId = $(this).data("id");
+        $.ajax({
+            url: './service/addToCart.php?id='+productId,
+            type: "GET",
+            success: function (total) {
+                if (total > 0) {
+                    $("#number-cart").text(total);
+                }
+                else
+                    $("#number-cart").text('');
+            }
+        })
+
+    });
+
+</script>
+<script type="text/javascript" src="./js/search-product.js"></script>
 </body>
 </html>

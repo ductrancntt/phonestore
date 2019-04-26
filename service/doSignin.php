@@ -1,6 +1,5 @@
 <?php
     require "Connection.php";
-
     if (!isset($_SESSION))
         session_start();
 
@@ -31,13 +30,20 @@
                 break;
             }
             $connection->closeConnection();
+
             if ($_SESSION['isAdmin'])
                 header("location:../admin.php");
-            else
-                header("location:../home.php");
+            else {
+                $_SESSION["userCart"] = array();
+                header("location:../search-result.php");
+            }
+
+
         } else {
             $connection->closeConnection();
             header("location:../signin.php?error=true");
         }
     }
 ?>
+
+

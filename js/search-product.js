@@ -8,36 +8,7 @@ let url = new URL(window.location.href);
 
 (function ($) {
 
-    let addToCartListener = function () {
-        $("button.btn.btn-primary.btn-add-to-cart").click(function () {
-            let currentCart = JSON.parse(sessionStorage.getItem("userCart"));
 
-            let cartMap = currentCart.reduce((map, product) => {
-                return map.set(product.productId, product.quantity);
-            }, new Map());
-
-            let productId = $(this).data("id");
-
-            if (cartMap.has(productId)) {
-                let quantity = parseInt(cartMap.get(productId));
-                quantity++;
-                cartMap.set(productId, quantity);
-            } else {
-                cartMap.set(productId, 1);
-            }
-
-            currentCart = [];
-            cartMap.forEach(function (value, key) {
-                currentCart.push({
-                    productId: key,
-                    quantity: value
-                });
-            });
-
-            sessionStorage.setItem("userCart", JSON.stringify(currentCart));
-            updateNumberCart();
-        });
-    }
 
     try {
         let manufacturers = url.searchParams.get("manufacturers").split(",");
@@ -56,7 +27,7 @@ let url = new URL(window.location.href);
     $("#max-price").val(max);
 
     $("#apply-button").click(function () {
-        let url = "/search-products?productName=" + $("#search-product").val();
+        let url = "search-result.php?productName=" + $("#search-product").val();
         let manufacturers = Array.from(selectedManufacturers);
         if (manufacturers.length > 0) {
             url += "&manufacturers=";
@@ -139,46 +110,12 @@ let url = new URL(window.location.href);
         return checkedAll;
     }
 
-    addToCartListener();
     isCheckedAll();
 
     if (min != null && max != null) {
         $("#price-range").addClass('show');
     }
 
-    let addToWishListListener = function () {
-        $("button.btn.wish-list.btn-add-to-wish-list").off("click");
-        $("button.btn.wish-list.btn-add-to-wish-list").click(function () {
-            $(this).tooltip('dispose');
-            let id = $(this).data("id");
-            $.post("/api/wish-list/add", {productId: id}, function () {
-                updateNumberWishList();
-                $("button.btn.wish-list.btn-add-to-wish-list[data-id='" + id + "']").replaceWith("<button type='button' class='btn btn-remove-wish-list' data-toggle='tooltip' data-placement='top' title='Remove from Wishlist' data-id='" + id + "'>" +
-                    "<i class='fas fa-heart'></i>" +
-                    "</button>");
-                removeFromWishListListener();
-                $("button[data-toggle='tooltip']").tooltip();
-            });
-        });
-    }
 
-    let removeFromWishListListener = function () {
-        $("button.btn.btn-remove-wish-list").off("click");
-        $("button.btn.btn-remove-wish-list").click(function () {
-            $(this).tooltip('dispose');
-            let id = $(this).data("id");
-            $.post("/api/wish-list/remove", {productId: id}, function () {
-                updateNumberWishList();
-                $("button.btn.btn-remove-wish-list[data-id='" + id + "']").replaceWith("<button type='button' class='btn wish-list btn-add-to-wish-list' data-toggle='tooltip' data-placement='top' title='Add to Wishlist' data-id='" + id + "'>" +
-                    "<i class='far fa-heart'></i>" +
-                    "</button>");
-                addToWishListListener();
-                $("button[data-toggle='tooltip']").tooltip();
-            });
-        });
-    }
-
-    addToWishListListener();
-    removeFromWishListListener();
 
 })(jQuery);

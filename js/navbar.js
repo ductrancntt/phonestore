@@ -30,6 +30,7 @@
         }
     });
 
+
 })(jQuery);
 
 function logout() {
@@ -37,27 +38,4 @@ function logout() {
     window.location.href = "/logout";
 }
 
-let updateNumberCart = function () {
-    if (sessionStorage.getItem("userCart") != null) {
-        let currentCart = JSON.parse(sessionStorage.getItem("userCart"));
-        let total = 0;
-        currentCart.forEach(function (ele) {
-            total += ele.quantity;
-        });
-        if (total > 0)
-            $("#number-cart").text(total);
-        else
-            $("#number-cart").text("");
-    } else {
-        sessionStorage.setItem("userCart", JSON.stringify([]));
-    }
-};
 
-let updateNumberWishList = function () {
-    $.get("/api/wish-list/count", function (response) {
-        if (response > 0)
-            $("#number-wish-list").text(response);
-        else
-            $("#number-wish-list").text("");
-    });
-}
