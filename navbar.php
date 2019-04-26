@@ -29,7 +29,7 @@
                     <span>CART</span>
 
                         <?php
-                        if (isset($_SESSION['userCart']) && count($_SESSION['userCart'])){
+                        if (isset($_SESSION['userCart']) && $_SESSION['userCart']){
                             $sum = 0;
                             foreach ( $_SESSION['userCart'] as $item){
                                 $sum += $item["quantity"];
@@ -39,6 +39,8 @@
                             else{
                                 echo "<span class='badge badge-pill badge-success' id='number-cart'></span>";
                             }
+                        }else{
+                            echo "<span class='badge badge-pill badge-success' id='number-cart'></span>";
                         }
                         ?>
                 </a>

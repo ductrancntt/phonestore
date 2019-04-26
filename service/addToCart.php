@@ -19,7 +19,7 @@ if(isset($_GET["id"])){
         }
         if(!$isExist){
             array_push($userCart, ["id"=>$_GET["id"], "quantity" => 1]);
-            echo "1";
+            echo $sum + 1;
         }else{
             echo $sum;
         }

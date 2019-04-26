@@ -26,7 +26,8 @@
                 $_SESSION['signedIn'] = true;
                 $_SESSION['username'] = $row["username"];
                 $_SESSION['isAdmin'] = $row["is_admin"];
-                
+                $_SESSION['user_id'] = $row["id"];
+                $_SESSION['email'] = $row["email"];
                 break;
             }
             $connection->closeConnection();
