@@ -68,7 +68,7 @@
                                 <article class="gallery-wrap">
                                     <div class="img-big-wrap">
                                         <div>
-                                            <a th:href="#" data-fancybox="">
+                                            <a href="#" data-fancybox="">
                                                 <?php echo '<img src='.$product["image"].'>'; ?>
                                             </a>
                                         </div>
