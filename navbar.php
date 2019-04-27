@@ -1,7 +1,10 @@
 <style>
-    .img-wrap img:hover{
-        transform: scale(1.2, 1.05);
+    .img-wrap img {
+        transition: transform 0.2s;
+    }
 
+    .img-wrap img:hover{
+        transform: scale(1.1);
     }
 </style>
 <nav class="navbar navbar-light bg-light justify-content-between border-bottom shadow-sm fixed-top nav-padding">
