@@ -96,7 +96,7 @@
                             ?>
                             <a class="dropdown-item" href="./invoices.php">
                                 <i class="fas fa-file-invoice-dollar" style="width: 15px"></i>
-                                <span> Purchase History</span>
+                                <span> Orders</span>
                             </a>
                         <?php
                         endif;

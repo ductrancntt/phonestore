@@ -73,21 +73,15 @@ if (isset($_SESSION["user_id"])) {
         <li class="nav-item active">
             <a class="nav-link" href="./invoices.php">
                 <i class="fas fa-file-invoice-dollar"></i>
-                <span> Purchase History</span>
+                <span> Your Orders</span>
             </a>
         </li>
         <hr class="sidebar-divider d-none d-md-block">
-        <!--        <div class="text-center d-none d-md-inline">-->
-        <!--            <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
-        <!--        </div>-->
-
     </ul>
 
     <div id="content-wrapper" class="d-flex flex-column" style="padding-top: 15px">
         <div class="container" id="content">
-            <h3>Purchase History</h3>
-
-
+            <h3>Your Orders</h3>
             <div class="table-responsive">
                 <table class="table table-hover" id="invoice-table" width="100%" cellspacing="0">
                     <thead class="table-header">
@@ -109,7 +103,7 @@ if (isset($_SESSION["user_id"])) {
                             <th style="text-align: right">' . $ymd . '</th>
                             <th  style="text-align: right">' . number_format($invoice["total"]) . ' đ</th>
                             <th style="text-align: right"><button type="button" disabled class="btn '
-                            . ($invoice["status"] == 0 ? 'btn-primary"> Đã đặt' : ($invoice["status"] == 1 ? 'btn-warning"> Đang giao' : ($invoice["status"] == 2 ? 'btn-success"> Đã giao' : 'btn-danger"> Đã Hủy'))) .
+                            . ($invoice["status"] == 0 ? 'btn-primary"> Ordered' : ($invoice["status"] == 1 ? 'btn-warning"> Delivering' : ($invoice["status"] == 2 ? 'btn-success"> Delivered' : 'btn-danger"> Cancelled'))) .
                             '</button></th>
                             <th style="text-align: center"><button type="button" class="btn btn-primary" onclick="loadInvoiceDetail(' . $invoice["id"] . ')">Detail</button>';
                         if($invoice["status"] != 3){
@@ -134,13 +128,13 @@ if (isset($_SESSION["user_id"])) {
                 let url = new URL(window.location.href);
                 let huy = url.searchParams.get("huy");
                 if(huy == 'success'){
-                    bootbox.alert("Hủy đơn hàng thành công!");
+                    bootbox.alert("Order has been cancelled!");
 
                 }
             })
 
             function cancel(id) {
-                bootbox.confirm("Bạn có thực sự muốn hủy đơn hàng", function (r) {
+                bootbox.confirm("Do you want to cancel this order?", function (r) {
                     if (r) {
                         window.location.href = "./service/cancel.php?id=" + id;
                     }
