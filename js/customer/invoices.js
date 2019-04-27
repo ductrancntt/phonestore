@@ -65,20 +65,6 @@
         $(this).val('');
     });
 
-    let init = function () {
-        $("#stores").append("<a class='dropdown-item' href='#' data-id='0'>All Stores</a>");
-        $.get("/api/stores", function (response) {
-            response.forEach(function (store) {
-                $("#stores").append("<a class='dropdown-item' href='#' data-id='" + store.id + "'>" + store.storeName + "</a>");
-            });
-
-            $("#stores a.dropdown-item").click(function () {
-                $("#selected-store").text($(this).text());
-                $("#selected-store").data("id", $(this).data("id"));
-            });
-        });
-    }
-
     let loadInvoiceDetail = function (id) {
         $.get("/api/customers/invoice-detail", {invoiceId: parseInt(id)}, function (response) {
             invoiceDetail = response;
@@ -97,112 +83,125 @@
         });
     }
 
-    let renderTable = function () {
-        table = $("#invoice-table").DataTable({
-            "pageLength": 10,
-            "lengthMenu": [[10, 20, 30], [10, 20, 30]],
-            "scrollX": false,
-            "serverSide": true,
-            "ordering": false,
-            "bFilter": false,
-            "language": {
-                "oPaginate": {
-                    sNext: "<i class='fas fa-angle-right'></i>",
-                    sPrevious: "<i class='fas fa-angle-left'></i>"
-                }
-            },
-            "ajax": function (requestParams, render) {
-                let params = {
-                    "page": (requestParams.start / requestParams.length) + 1,
-                    "limit": requestParams.length,
-                    "storeId": selectedStoreId,
-                    "startDate": startDate,
-                    "endDate": endDate
-                };
-
-                $.get("/api/invoices/customer/page", params, function (response) {
-                    render({
-                        "draw": requestParams.draw,
-                        "recordsTotal": response.totalElements,
-                        "recordsFiltered": response.totalElements,
-                        "data": response.content
-                    });
-                });
-            },
-            "columns": [
-                {
-                    "data": null,
-                    "className": 'align-middle bold font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle'
-                }
-            ],
-            "columnDefs": [
-                {
-                    "render": function (data) {
-                        return data.id;
-                    },
-                    "targets": 0
-                },
-                {
-                    "render": function (data) {
-                        return data.customer.customerName;
-                    },
-                    "targets": 1
-                },
-                {
-                    "render": function (data) {
-                        return formatNumber(data.total) + " ₫";
-                    },
-                    "targets": 2
-                },
-                {
-                    "render": function (data) {
-                        return data.store.storeName;
-                    },
-                    "targets": 3
-                },
-                {
-                    "render": function (data) {
-                        return data.createdDate;
-                    },
-                    "targets": 4
-                },
-                {
-                    "render": function (data) {
-                        return "<div class='table-right-button'>" +
-                            "<button type='button' class='btn btn-info btn-table-invoice font-responsive' data-id='" + data.id + "' style='margin-right: 10px;' data-toggle='modal' data-target='#invoice-modal'>" +
-                            "<i class='fas fa-eye'></i>" +
-                            "</button>" +
-                            "</div>";
-                    },
-                    "targets": 5
-                }
-            ],
-            drawCallback: function () {
-                $("button.btn.btn-info.btn-table-invoice").click(function () {
-                    loadInvoiceDetail($(this).data("id"));
-                });
-            }
+    let loadInvoices = function() {
+        $.get("./service/loadInvoices.php", {startDate: startDate, endDate: endDate}, function (response) {
+            renderTable(response);
         });
+    }
+
+    let renderTable = function (data) {
+        $("#invoice-table tbody").empty();
+        data.forEach(function (e) {
+            let row = "<tr>";
+
+            row += "</tr>";
+            $("#invoice-table tbody").append(row);
+        });
+        // table = $("#invoice-table").DataTable({
+        //     "pageLength": 10,
+        //     "lengthMenu": [[10, 20, 30], [10, 20, 30]],
+        //     "scrollX": false,
+        //     "serverSide": true,
+        //     "ordering": false,
+        //     "bFilter": false,
+        //     "language": {
+        //         "oPaginate": {
+        //             sNext: "<i class='fas fa-angle-right'></i>",
+        //             sPrevious: "<i class='fas fa-angle-left'></i>"
+        //         }
+        //     },
+        //     "ajax": function (requestParams, render) {
+        //         let params = {
+        //             "page": (requestParams.start / requestParams.length) + 1,
+        //             "limit": requestParams.length,
+        //             "storeId": selectedStoreId,
+        //             "startDate": startDate,
+        //             "endDate": endDate
+        //         };
+        //
+        //         $.get("/api/invoices/customer/page", params, function (response) {
+        //             render({
+        //                 "draw": requestParams.draw,
+        //                 "recordsTotal": response.totalElements,
+        //                 "recordsFiltered": response.totalElements,
+        //                 "data": response.content
+        //             });
+        //         });
+        //     },
+        //     "columns": [
+        //         {
+        //             "data": null,
+        //             "className": 'align-middle bold font-responsive'
+        //         },
+        //         {
+        //             "data": null,
+        //             "className": 'align-middle font-responsive'
+        //         },
+        //         {
+        //             "data": null,
+        //             "className": 'align-middle font-responsive'
+        //         },
+        //         {
+        //             "data": null,
+        //             "className": 'align-middle font-responsive'
+        //         },
+        //         {
+        //             "data": null,
+        //             "className": 'align-middle font-responsive'
+        //         },
+        //         {
+        //             "data": null,
+        //             "className": 'align-middle'
+        //         }
+        //     ],
+        //     "columnDefs": [
+        //         {
+        //             "render": function (data) {
+        //                 return data.id;
+        //             },
+        //             "targets": 0
+        //         },
+        //         {
+        //             "render": function (data) {
+        //                 return data.customer.customerName;
+        //             },
+        //             "targets": 1
+        //         },
+        //         {
+        //             "render": function (data) {
+        //                 return formatNumber(data.total) + " ₫";
+        //             },
+        //             "targets": 2
+        //         },
+        //         {
+        //             "render": function (data) {
+        //                 return data.store.storeName;
+        //             },
+        //             "targets": 3
+        //         },
+        //         {
+        //             "render": function (data) {
+        //                 return data.createdDate;
+        //             },
+        //             "targets": 4
+        //         },
+        //         {
+        //             "render": function (data) {
+        //                 return "<div class='table-right-button'>" +
+        //                     "<button type='button' class='btn btn-info btn-table-invoice font-responsive' data-id='" + data.id + "' style='margin-right: 10px;' data-toggle='modal' data-target='#invoice-modal'>" +
+        //                     "<i class='fas fa-eye'></i>" +
+        //                     "</button>" +
+        //                     "</div>";
+        //             },
+        //             "targets": 5
+        //         }
+        //     ],
+        //     drawCallback: function () {
+        //         $("button.btn.btn-info.btn-table-invoice").click(function () {
+        //             loadInvoiceDetail($(this).data("id"));
+        //         });
+        //     }
+        // });
     }
 
     $("#search-invoice-button").click(function () {
@@ -220,7 +219,6 @@
         table.ajax.reload();
     });
 
-    init();
-    renderTable();
+    loadInvoices();
 
 })(jQuery);

@@ -53,6 +53,6 @@
         </div>
     </div>
 </div>
-<script src="/js/change-password.js" type="text/javascript"></script>
+<script src="./js/change-password.js" type="text/javascript"></script>
 </body>
 </html>

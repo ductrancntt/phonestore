@@ -67,13 +67,6 @@
                     <input type="text" id="date-range-picker" class="form-control font-responsive"
                            placeholder="Date Range" style="text-align: center;">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary font-responsive" type="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                            <span id="selected-store" data-id="0">All Stores</span>
-                            <i class="fas fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-menu font-responsive" id="stores">
-                        </div>
                         <button class="btn btn-primary font-responsive" type="button" style="width: 100px;"
                                 id="search-invoice-button">
                             <i class="fas fa-search"></i>
@@ -95,7 +88,6 @@
                         <th scope="col">ID</th>
                         <th scope="col">Customer Name</th>
                         <th scope="col">Total</th>
-                        <th scope="col">Stores</th>
                         <th scope="col">Created Date</th>
                         <th></th>
                     </tr>

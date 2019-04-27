@@ -15,7 +15,7 @@
         $("button[data-toggle='tooltip']").tooltip();
     });
 
-    // let formatNumber = function(number) {
-    //     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    // }
+    let formatNumber = function(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
 </script>
