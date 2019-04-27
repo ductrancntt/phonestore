@@ -41,6 +41,11 @@
                                    required>
                             <label for="phone">Phone</label>
                         </div>
+                        <div class="form-label-group">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email"
+                                   required>
+                            <label for="email">Email</label>
+                        </div>
                         <hr class="my-4">
                         <button class="btn btn-lg btn-success btn-block text-uppercase" id="update-information-button"
                                 type="button">Submit

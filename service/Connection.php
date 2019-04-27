@@ -18,13 +18,13 @@
         }
 
         public function createConnection() {
-            $this->conn = mysqli_connect($this->servername, $this->username, $this->password, $this->schema);
+            $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->schema);
             mysqli_set_charset($this->conn,"utf8");
         }
 
         public function closeConnection() {
             if ($this->conn) {
-                mysqli_close($this->conn);
+                $this->conn->close();
             }
         }
 
