@@ -1,41 +1,42 @@
 <?php
-require_once "./service/Connection.php";
-if (!isset($connection)) {
-    $connection = new Connection();
-}
-$connection->createConnection();
-
-$sql = "SELECT * FROM banner WHERE enable = 1";
-
-$result = $connection->excuteQuery($sql);
-$bannerList = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $banner = ["image" => $row["image"], "link" => $row["link"]];
-        array_push($bannerList, $banner);
+    require_once "./service/Connection.php";
+    if (!isset($connection)) {
+        $connection = new Connection();
     }
-    $connection->closeConnection();
+    $connection->createConnection();
 
-} else {
-    $connection->closeConnection();
-}
-?>
-<?php
-$connection->createConnection();
-define("BANNER_TIME", "BANNER_TIME");
-$sql = "SELECT * FROM setting WHERE name = '" . BANNER_TIME . "'";
+    $sql = "SELECT * FROM banner WHERE enable = 1";
 
-$result = $connection->excuteQuery($sql);
-$time = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $time = $row["value"];
+    $result = $connection->excuteQuery($sql);
+    $bannerList = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $banner = ["image" => $row["image"], "link" => $row["link"]];
+            array_push($bannerList, $banner);
+        }
+        $connection->closeConnection();
+
+    } else {
+        $connection->closeConnection();
     }
-    $connection->closeConnection();
+    ?>
+    <?php
+    $connection->createConnection();
+    define("BANNER_TIME", "BANNER_TIME");
+    $sql = "SELECT * FROM setting WHERE name = '" . BANNER_TIME . "'";
 
-} else {
-    $connection->closeConnection();
-}
+    $result = $connection->excuteQuery($sql);
+    $time = array();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $time = $row["value"];
+        }
+        $connection->closeConnection();
+
+    } else {
+        $connection->closeConnection();
+    }
 ?>
 <section>
     <div class="banner" style="background-color:  #f8f8f8">

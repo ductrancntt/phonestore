@@ -122,10 +122,10 @@ $connection->closeConnection();
             <div class="row-sm" id="recommended-phones">
                 <?php
                 foreach ($productTopNewList as $product) {
-                    echo " <div class='col-md-3'>
+                    echo "<div class='col-md-3'>
                     <figure class='card card-product'>
                         <div class='img-wrap'>
-                            <img src='\" + product.url + \"'>
+                            <img src='".$product['image']."'>
                             <a class='btn-overlay' href='./product-detail.php?id=" . $product["id"] . "'><i
                                         class='fa fa-search'></i> Detail</a>
                         </div>
@@ -139,7 +139,7 @@ $connection->closeConnection();
                                 <span> ADD</span>
                                 </button>
                             <div class='price-wrap h5'>
-                            <span class='price-new'>" . number_format($product["price"]) . " </span >
+                            <span class='price-new'>" . number_format($product["price"]) . " đ</span >
                             <del class='price-old' ></del >
                             </div >
                             </div >

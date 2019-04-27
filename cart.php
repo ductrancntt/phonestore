@@ -109,11 +109,11 @@ function getProductById($id)
 
                     <dl class="dlist-align h4">
                         <dt>Total:</dt>
-                        <dd class="text-right"><strong>VND <?php echo number_format($sum); ?></strong></dd>
+                        <dd class="text-right"><strong>đ <?php echo number_format($sum); ?></strong></dd>
                     </dl>
                     <hr>
                     <input <?php if(count($_SESSION["userCart"]) == 0) echo "disabled"; ?> type="button"
-                           onclick="window.location.href = './thanhtoan.php?diachi=Hanoi'" class="btn btn-primary btn-block" value="Pay">
+                                                                                           onclick="window.location.href = './checkout.php'" class="btn btn-primary btn-block" value="Check Out">
 
                 </aside> <!-- col.// -->
             </div>

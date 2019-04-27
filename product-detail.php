@@ -52,9 +52,9 @@
         <div class="container">
             <nav class="mb-3">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="./home.php">Home</a></li>
                     <li class="breadcrumb-item"><a
-                            <?php echo 'href="/search-products?manufacturers='.$product["manufacturer_id"].'"'; ?>><?php echo $product["manufacturer_name"]; ?></a></li>
+                            <?php echo 'href="./search-result.php?manufacturers='.$product["manufacturer_id"].'"'; ?>><?php echo $product["manufacturer_name"]; ?></a></li>
                     <li class="breadcrumb-item active"><span><?php echo $product["name"]; ?></span></li>
                 </ol>
             </nav>
@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="img-small-wrap">
                                         <div class="item-gallery">
-                                            <img th:src="${product.product.url}">
+                                            <?php echo '<img src='.$product["image"].'>'; ?>
                                         </div>
                                     </div>
                                 </article>
@@ -176,7 +176,11 @@
                                     </div>
                                     <hr>
                                     <button class="btn btn-warning" id="review-button"
-                                            th:attr="data-id=${product.product.id}" th:disabled="${!authenticated}">
+                                            <?php
+                                                echo "data-id='".$product['id']."'";
+                                            ?>
+                                        <?php echo 'data-id="'.$_GET["id"].'"'; ?>
+                                        <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
                                         <i class="fas fa-star"></i>
                                         <span> Review Product</span>
                                     </button>
@@ -300,6 +304,6 @@
 <?php
     include "footer.php";
 ?>
-<!-- <script type="text/javascript" src="./js/product-detail.js"></script> -->
+<script type="text/javascript" src="./js/product-detail.js"></script>
 </body>
 </html>
