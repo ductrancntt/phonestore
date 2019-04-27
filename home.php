@@ -40,13 +40,15 @@ if ($result1->num_rows > 0) {
     }
 }
 
-//$getTopSale = "SELECT * FROM manufacturer";
-//$result = $connection->excuteQuery($getTopSale);
-//if ($result->num_rows > 0) {
-//    while ($row = $result->fetch_assoc()) {
-//        array_push($productTopSaleList, $row);
-//    }
-//}
+$getTopSale = "select * FROM product 
+    JOIN (SELECT product_id FROM `item` GROUP BY item.product_id ORDER BY sum(quantity) DESC limit 4) as X 
+    ON x.product_id = product.id";
+$result = $connection->excuteQuery($getTopSale);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        array_push($productTopSaleList, $row);
+    }
+}
 
 $getTopNew = "SELECT * FROM product ORDER BY id DESC limit 4";
 $result2 = $connection->excuteQuery($getTopNew);
@@ -109,6 +111,34 @@ $connection->closeConnection();
             </header>
 
             <div class="row-sm" id="top-sellers">
+                <?php
+                foreach ($productTopSaleList as $product) {
+                    echo "<div class='col-md-3'>
+                    <figure class='card card-product'>
+                        <div class='img-wrap'>
+                            <img src='".$product['image']."'>
+                            <a class='btn-overlay' href='./product-detail.php?id=" . $product["id"] . "'><i
+                                        class='fa fa-search'></i> Detail</a>
+                        </div>
+                        <figcaption class='info-wrap'>
+                            <a href='./product-detail.php?id=" . $product["id"] . "' class='title'>" . $product["name"] . "</a>
+                            <div class='action-wrap'>
+                                <button type='button' class='btn btn-primary btn-sm float-right btn-add-to-cart'
+                                        data-id='" . $product["id"] . "' 
+                                " . ((isset($_SESSION['signedIn']) && $_SESSION['signedIn']) ? '' : ' disabled') . ">
+                                <i class='fas fa-cart-plus'></i>
+                                <span> ADD</span>
+                                </button>
+                            <div class='price-wrap h5'>
+                            <span class='price-new'>" . number_format($product["price"]) . " đ</span >
+                            <del class='price-old' ></del >
+                            </div >
+                            </div >
+                            </figcaption >
+                            </figure >
+                            </div > ";
+                }
+                ?>
             </div>
         </div>
     </section>
@@ -132,7 +162,7 @@ $connection->closeConnection();
                         <figcaption class='info-wrap'>
                             <a href='./product-detail.php?id=" . $product["id"] . "' class='title'>" . $product["name"] . "</a>
                             <div class='action-wrap'>
-                                <button type='button' class='btn btn-primary btn-sm float-right'
+                                <button type='button' class='btn btn-primary btn-sm float-right btn-add-to-cart'
                                         data-id='" . $product["id"] . "' 
                                 " . ((isset($_SESSION['signedIn']) && $_SESSION['signedIn']) ? '' : ' disabled') . ">
                                 <i class='fas fa-cart-plus'></i>

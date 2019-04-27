@@ -68,17 +68,16 @@ function getProductById($id)
                                 echo ' <tr>
                                             <td>
                                                 <figure class="media">
-                                                    <div class="img-wrap"><img src="' . $product["image"] . '
-                                                                               class="img-thumbnail img-sm"></div>
+                                                    <div class="img-wrap"><img src="' . $product["image"] . '" class="img-thumbnail img-sm"></div>
                                                     <figcaption class="media-body">
                                                         <h6 class="title text-truncate">' . $product["name"] . '</h6>
                                                         <dl class="dlist-inline small">
-                                                            <dt>Size:</dt>
-                                                            <dd>XXL</dd>
+                                                            <dt>Memory:</dt>
+                                                            <dd>'.$product["memory"].'</dd>
                                                         </dl>
                                                         <dl class="dlist-inline small">
-                                                            <dt>Color:</dt>
-                                                            <dd>Orange color</dd>
+                                                            <dt>Screen size:</dt>
+                                                            <dd>'.$product["screen_size"].'</dd>
                                                         </dl>
                                                     </figcaption>
                                                 </figure>
@@ -89,7 +88,7 @@ function getProductById($id)
                                             <td>
                                                 <div class="price-wrap">
                                                     <var class="price">' . number_format($product["price"] * $item["quantity"]) . ' đ</var>
-                                                    <small class="text-muted">' . number_format($product["price"]) . ' đ</small>
+                                                    <small class="text-muted">' . number_format($product["price"]) . ' đ/1pcs</small>
                                                 </div> <!-- price-wrap .// -->
                                             </td>
                                             <td>

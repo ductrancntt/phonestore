@@ -21,6 +21,7 @@ if (!isset($_SESSION))
 
         .brand-checkbox {
         }
+
     </style>
 </head>
 <body>
@@ -152,14 +153,14 @@ $connection->closeConnection();
                             <div class="row">
                                 <aside class="col-sm-3">
                                     <div class="img-wrap">
-                                        <img src="' . $product["image"] . '">
+                                        <a href="./product-detail.php?id=' . $product["id"] . '"><img src="' . $product["image"] . '"></a>
                                     </div>
                                 </aside>
                                 <article class="col-sm-6">
 
                                     <a class="title h4" href="./product-detail.php?id=' . $product["id"] . '">' . $product["name"] . '</a>
                                     
-                                    <p th:text="${product.product.description}"> Description here </p>
+                                    <p>'.$product["description"].'</p>
                                     <dl class="dlist-align">
                                         <dt>Manufacturer</dt>
                                         <dd>'.$product["manufacturer_name"].'</dd>
@@ -207,25 +208,7 @@ $connection->closeConnection();
 <?php
 include "footer.php";
 ?>
-<script>
-    $("button.btn.btn-primary.btn-add-to-cart").click(function () {
 
-        let productId = $(this).data("id");
-        $.ajax({
-            url: './service/addToCart.php?id='+productId,
-            type: "GET",
-            success: function (total) {
-                if (total > 0) {
-                    $("#number-cart").text(total);
-                }
-                else
-                    $("#number-cart").text('');
-            }
-        })
-
-    });
-
-</script>
 <script type="text/javascript" src="./js/search-product.js"></script>
 </body>
 </html>

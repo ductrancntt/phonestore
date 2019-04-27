@@ -117,26 +117,7 @@
                                             <span class="text-success">Free Shipping</span>
                                         </dd>
                                     </dl>
-                                    <div class="rating-wrap">
-                                        <ul class="rating-stars">
-                                            <li class="stars-active width-100" id="active-rating-stars">
-                                                <th:block th:if="${product.avgRating > 0}"
-                                                          th:each="i : ${#numbers.sequence(0, product.avgRating - 1)}">
-                                                    <i class="fa fa-star"></i>
-                                                </th:block>
-                                            </li>
-                                            <li id="avg-rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </li>
-                                        </ul>
-                                        <div class="label-rating" id="total-reviews" style="padding-left: 10px"
-                                             th:text="${product.totalRating} + ' reviews'"></div>
-                                        <div class="label-rating" th:text="${product.totalOrder} + ' orders'"></div>
-                                    </div>
+
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-7">
@@ -151,23 +132,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-5">
-                                            <button type="button" class="btn wish-list btn-add-to-wish-list"
-                                                    data-toggle='tooltip' data-placement='top' title='Add to Wishlist'
-                                                    th:attr="data-id=${product.product.id}"
-                                                <?php echo 'data-id="'.$_GET["id"].'"'; ?>
-                                                <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>
-                                                    th:if="${!product.inWishList}">
-                                                <i class="far fa-heart"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-remove-wish-list"
-                                                    data-toggle='tooltip' data-placement='top'
-                                                    title='Remove from Wishlist'
-                                                    th:attr="data-id=${product.product.id}"
-                                                <?php echo 'data-id="'.$_GET["id"].'"'; ?>
-                                                <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>
-                                                    th:if="${product.inWishList}">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
+
                                             <button type="button" class="btn btn-primary btn-add-to-cart"
                                                     style="width: 60%"
                                                     <?php echo 'data-id="'.$_GET["id"].'"'; ?>
@@ -178,15 +143,7 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    <button class="btn btn-warning" id="review-button"
-                                            <?php
-                                                echo "data-id='".$product['id']."'";
-                                            ?>
-                                        <?php echo 'data-id="'.$_GET["id"].'"'; ?>
-                                        <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
-                                        <i class="fas fa-star"></i>
-                                        <span> Review Product</span>
-                                    </button>
+                                    
                                 </article>
                             </aside>
                         </div>

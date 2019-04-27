@@ -1,3 +1,9 @@
+<style>
+    .img-wrap img:hover{
+        transform: scale(1.2, 1.05);
+
+    }
+</style>
 <nav class="navbar navbar-light bg-light justify-content-between border-bottom shadow-sm fixed-top nav-padding">
     <div class="container-fluid">
         <a class="navbar-brand" href="./home.php">
@@ -113,4 +119,26 @@
 
 
     <script type="text/javascript" src="./js/navbar.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("button.btn.btn-primary.btn-add-to-cart").click(function () {
+
+                let productId = $(this).data("id");
+                $.ajax({
+                    url: './service/addToCart.php?id='+productId,
+                    type: "GET",
+                    success: function (total) {
+                        if (total > 0) {
+                            $("#number-cart").text(total);
+                        }
+                        else
+                            $("#number-cart").text('');
+                    }
+                })
+
+            });
+        })
+
+
+    </script>
 </nav>
