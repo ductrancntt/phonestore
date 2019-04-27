@@ -67,7 +67,7 @@
                             <aside class="col-sm-6 border-right">
                                 <article class="gallery-wrap">
                                     <div class="img-big-wrap">
-                                        <div>
+                                        <div id="product-image" data-scale="1.25" style="transition: transform 0.2s">
                                             <a <?php echo "href='".$product["image"]."'"; ?> data-fancybox="">
                                                 <?php echo '<img src='.$product["image"].'>'; ?>
                                             </a>
