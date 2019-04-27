@@ -66,21 +66,26 @@
     });
 
     let loadInvoiceDetail = function (id) {
-        $.get("/api/customers/invoice-detail", {invoiceId: parseInt(id)}, function (response) {
-            invoiceDetail = response;
-            $("#invoice-detail-table tbody").empty();
-            invoiceDetail.items.forEach(function (item, index) {
-                let row = "<tr>";
-                row += "<th scope='row'>" + (index + 1) + "</th>";
-                row += "<td>" + item.product.productName + "</td>";
-                row += "<td>" + formatNumber(item.price) + " ₫</td>";
-                row += "<td>" + item.quantity + " pcs</td>";
-                row += "<td>" + formatNumber(item.price * item.quantity) + " ₫</td>";
-                row += "</tr>";
-                $("#invoice-detail-table tbody").append(row);
-            });
-            $("#invoice-detail-table tbody").append("<tr><th colspan='4' scope='col' style='text-align: center'>Total Invoice</th><td>" + formatNumber(invoiceDetail.total) + " ₫</td></tr>");
-        });
+        $.ajax({
+            url: "./service/invoiceDetail?id="+id,
+            type: "GET",
+            success: function (response) {
+                invoiceDetail = response;
+                $("#invoice-detail-table tbody").empty();
+                invoiceDetail.items.forEach(function (item, index) {
+                    let row = "<tr>";
+                    row += "<th scope='row'>" + (index + 1) + "</th>";
+                    row += "<td>" + item.product.productName + "</td>";
+                    row += "<td>" + formatNumber(item.price) + " ₫</td>";
+                    row += "<td>" + item.quantity + " pcs</td>";
+                    row += "<td>" + formatNumber(item.price * item.quantity) + " ₫</td>";
+                    row += "</tr>";
+                    $("#invoice-detail-table tbody").append(row);
+                });
+                $("#invoice-detail-table tbody").append("<tr><th colspan='4' scope='col' style='text-align: center'>Total Invoice</th><td>" + formatNumber(invoiceDetail.total) + " ₫</td></tr>");
+            }
+        })
+
     }
 
     let loadInvoices = function() {

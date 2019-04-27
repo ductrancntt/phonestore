@@ -143,7 +143,7 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    
+
                                 </article>
                             </aside>
                         </div>

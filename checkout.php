@@ -28,17 +28,22 @@ try {
     $dateStr = $date->format("YmdHis");
     $sql = "INSERT INTO invoice(ship_address, created_date, user_id) VALUES('" . $_GET['diachi'] . "'," . $dateStr . "," . $_SESSION['user_id'] . ")";
     $invoiceId = insert($connection, $sql);
-
+    $sum = 0;
     foreach ($_SESSION["userCart"] as $item) {
         $product = getProductById($item["id"]);
         if ($product["quantity"] >= $item["quantity"]) {
             $sql = "UPDATE product SET quantity = " . ($product["quantity"] - $item["quantity"]) . " WHERE id = " . $item["id"];
             $connection->excuteQuery($sql);
+        }else{
+            throw new ErrorException("hàng còn lại không đủ");
         }
         $sql = "INSERT INTO item(invoice_id, product_id,quantity, order_price) 
             VALUES(" . $invoiceId . "," . $item["id"] . "," . $item["quantity"] . "," . $product["price"] . ")";
+        $sum += $item["quantity"]*$product["price"];
         insert($connection, $sql);
     }
+    $sql = "UPDATE invoice SET total = " . $sum . " WHERE id = " . $invoiceId;
+    $connection->excuteQuery($sql);
     sendMail($_SESSION["email"]);
     mysqli_query($connection->getConnection(), "COMMIT");
     $_SESSION["userCart"] = array();

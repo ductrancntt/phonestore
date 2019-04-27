@@ -2,7 +2,7 @@
     class Connection {
     
         private $servername = 'localhost:3306';
-        private $schema = "phonestore";
+        private $schema = "phone_store";
         private $username ="root";
         private $password = "";
         private $conn = null;

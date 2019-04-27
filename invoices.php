@@ -1,17 +1,17 @@
 <?php
-    if (!isset($_SESSION))
-        session_start();
+if (!isset($_SESSION))
+    session_start();
 
-    if (!(isset($_SESSION['signedIn']) && $_SESSION['signedIn'])) {
-        header("location:./index.php");
-    }
+if (!(isset($_SESSION['signedIn']) && $_SESSION['signedIn'])) {
+    header("location:./index.php");
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <?php
-        include "header.php";
+    include "header.php";
     ?>
     <title>Purchase History</title>
     <link href="./css/ui.css" rel="stylesheet" type="text/css">
@@ -26,7 +26,36 @@
 </head>
 <body id="page-top">
 <?php
-    include "navbar.php";
+include "navbar.php";
+?>
+<?php
+require_once "./service/Connection.php";
+
+if (isset($_SESSION["user_id"])) {
+    $invoiceList = array();
+    $connection = new Connection();
+    $connection->createConnection();
+    $sql = "SELECT * FROM invoice WHERE user_id = " . $_SESSION["user_id"] . " ORDER BY created_date DESC";
+    $result = $connection->excuteQuery($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($invoiceList, $row);
+        }
+    }
+    $itemList = array();
+    if (isset($_GET["id"])) {
+        $sql = "SELECT item.*, product.name as name FROM item JOIN product ON product.id = item.product_id WHERE invoice_id = " . $_GET["id"];
+        $result = $connection->excuteQuery($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                array_push($itemList, $row);
+            }
+        }
+    }
+    $connection->closeConnection();
+}
+
+
 ?>
 <div id="wrapper">
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -40,12 +69,7 @@
         <div class="sidebar-heading">
             Management
         </div>
-        <li class="nav-item">
-            <a class="nav-link" href="./wish-list.php">
-                <i class="fas fa-heart"></i>
-                <span> Wish List</span>
-            </a>
-        </li>
+
         <li class="nav-item active">
             <a class="nav-link" href="./invoices.php">
                 <i class="fas fa-file-invoice-dollar"></i>
@@ -53,52 +77,69 @@
             </a>
         </li>
         <hr class="sidebar-divider d-none d-md-block">
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
+<!--        <div class="text-center d-none d-md-inline">-->
+<!--            <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
+<!--        </div>-->
 
     </ul>
 
     <div id="content-wrapper" class="d-flex flex-column" style="padding-top: 15px">
         <div class="container" id="content">
             <h3>Purchase History</h3>
-            <div class="row">
-                <div class="input-group mb-3 col-md-6">
-                    <input type="text" id="date-range-picker" class="form-control font-responsive"
-                           placeholder="Date Range" style="text-align: center;">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary font-responsive" type="button" style="width: 100px;"
-                                id="search-invoice-button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <button class="btn btn-outline-primary font-responsive" type="button" style="float: right;"
-                            id="invoice-refresh-button">
-                        <i class="fas fa-sync-alt"></i>
-                        <span>REFRESH</span>
-                    </button>
-                </div>
-            </div>
+
+
             <div class="table-responsive">
                 <table class="table table-hover" id="invoice-table" width="100%" cellspacing="0">
                     <thead class="table-header">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Total</th>
                         <th scope="col">Created Date</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Ship Address</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
+                    <?php
+                    foreach ($invoiceList as $invoice) {
+                        $ymd = DateTime::createFromFormat('YmdHis', $invoice["created_date"])->format('d/m/Y H:i:s');
+
+                        echo '<tr>
+                            <th>' . $invoice["id"] . '</th>
+                            <th>' . $ymd . '</th>
+                            <th>' . number_format($invoice["total"]) . ' đ</th>
+                            <th>' . $invoice["ship_address"] . '</th>
+                            <th><button type="button" disabled class="btn '
+                            . ($invoice["status"] == 0 ? 'btn-primary"> Đã đặt' : ($invoice["status"] == 1 ? 'btn-warning"> Đang giao' : ($invoice["status"] == 2 ? 'btn-success"> Đã giao' : 'btn-danger"> Hủy'))) .
+                            '</button></th>
+                            <th><button type="button" class="btn btn-primary" onclick="loadInvoiceDetail(' . $invoice["id"] . ')">Detail</button></th>
+                        </tr>';
+                    }
+                    ?>
 
                     </tbody>
                 </table>
             </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                let display = false;
+                display = <?php if (isset($_SESSION["user_id"]) && isset($_GET["id"])) echo "true";
+                                else echo "false"; ?>;
+                if (display) {
+                    $('#run').click();
+                }
 
+            })
+
+            function loadInvoiceDetail(id) {
+                window.location.href = "./invoices.php?id=" + id;
+            }
+        </script>
+        <button id="run" type='button' class='btn btn-info btn-table-invoice font-responsive'
+                style='margin-right: 10px; display: none' data-toggle='modal' data-target='#invoice-modal'>
+        </button>
         <div class="modal fade" id="invoice-modal" tabindex="-1" role="dialog"
              aria-labelledby="employeeModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-invoices" style="max-width: 40%" role="document">
@@ -120,7 +161,23 @@
                                 <th scope="col">Total</th>
                             </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <?php
+                            $sum = 0;
+                            for ($i = 0; $i < count($itemList); $i++) {
+                                $item = $itemList[$i];
+                                $sum += $item["quantity"] * $item["order_price"];
+                                echo '<tr>
+                                        <th scope="col">' . ($i + 1) . '</th>
+                                        <th scope="col">' . $item["name"] . '</th>
+                                        <th scope="col">' . number_format($item["order_price"]) . '</th>
+                                        <th scope="col">' . $item["quantity"] . '</th>
+                                        <th scope="col">' . number_format($item["quantity"] * $item["order_price"]) . '</th>
+                                    </tr>';
+                            }
+                            echo "<tr><th colspan='4' scope='col' style='text-align: center'>Total Invoice</th><td>" . number_format($sum) . " ₫</td></tr>";
+                            ?>
+                            </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -135,7 +192,7 @@
         </div>
 
         <?php
-            include "footer.php";
+        include "footer.php";
         ?>
     </div>
 
@@ -143,6 +200,5 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
-<script type="text/javascript" src="./js/customer/invoices.js"></script>
 </body>
 </html>
