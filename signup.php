@@ -26,13 +26,17 @@
             <div class="card card-sign-in my-5">
                 <div class="card-body">
                     <h5 class="card-title text-center">Sign Up</h5>
-                    <h6 id="username-error" class="text-center" style="color: red; margin-bottom: 15px; display: none;">
-                        Please choose another name!</h6>
+                    <h6 id="error" class="text-center" style="color: red; margin-bottom: 15px; display: none;"></h6>
                     <form if="signup-form" class="form-sign-in">
                         <div class="form-label-group">
                             <input type="text" id="username" name="username" class="form-control" placeholder="Username"
                                    required autofocus>
                             <label for="username">Username</label>
+                        </div>
+                        <div class="form-label-group">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Username"
+                                   required autofocus>
+                            <label for="email">Email</label>
                         </div>
                         <div class="form-label-group">
                             <input type="password" id="password" name="password" class="form-control"

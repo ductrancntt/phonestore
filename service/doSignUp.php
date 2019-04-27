@@ -6,8 +6,8 @@
     if ($user != null) {
         $conn = new Connection;
 
-        $signUpQuery = "INSERT INTO `user` (`username`, `password`, `name`, `address`, `phone`, `is_admin`, `enable`) 
-        VALUES ('".$user->username."', '".$user->password."', '".$user->name."', '".$user->address."', '".$user->phone."', 0, 1)";
+        $signUpQuery = "INSERT INTO `user` (`username`, `password`, `email`, `name`, `address`, `phone`, `is_admin`, `enable`) 
+        VALUES ('".$user->username."', '".$user->password."', '".$user->email."', '".$user->name."', '".$user->address."', '".$user->phone."', 0, 1)";
 
         $conn->createConnection();
         $result = $conn->excuteQuery($signUpQuery);
