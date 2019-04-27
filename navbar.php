@@ -127,8 +127,10 @@
             $("button.btn.btn-primary.btn-add-to-cart").click(function () {
 
                 let productId = $(this).data("id");
+                let quantity = $("#quantity-input").val();
+
                 $.ajax({
-                    url: './service/addToCart.php?id='+productId,
+                    url: './service/addToCart.php?id='+productId+'&quantity='+quantity,
                     type: "GET",
                     success: function (total) {
                         if (total > 0) {

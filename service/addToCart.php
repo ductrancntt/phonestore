@@ -11,14 +11,14 @@ if(isset($_GET["id"])){
         for ($i =0 ; $i < count($userCart); $i++){
             $item = $userCart[$i];
             if($item["id"] == $_GET["id"]){
-                $item["quantity"] = $item["quantity"] + 1;
+                $item["quantity"] = $item["quantity"] + $_GET['quantity'];
                 $userCart[$i] = $item;
                 $isExist = true;
             }
             $sum += $userCart[$i]["quantity"];
         }
         if(!$isExist){
-            array_push($userCart, ["id"=>$_GET["id"], "quantity" => 1]);
+            array_push($userCart, ["id"=>$_GET["id"], "quantity" => $_GET['quantity']]);
             echo $sum + 1;
         }else{
             echo $sum;
