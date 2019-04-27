@@ -68,7 +68,7 @@
                                 <article class="gallery-wrap">
                                     <div class="img-big-wrap">
                                         <div>
-                                            <a href="#" data-fancybox="">
+                                            <a <?php echo "href='".$product["image"]."'"; ?> data-fancybox="">
                                                 <?php echo '<img src='.$product["image"].'>'; ?>
                                             </a>
                                         </div>
@@ -146,14 +146,16 @@
                                                 </div>
                                                 <input id="quantity-input" type="number" min="1" value="1"
                                                        class="form-control" style="text-align: center;"
-                                                       th:disabled="${!authenticated}">
+                                                    <?php echo 'data-id="'.$_GET["id"].'"'; ?>
+                                                    <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
                                             </div>
                                         </div>
                                         <div class="col-sm-5">
                                             <button type="button" class="btn wish-list btn-add-to-wish-list"
                                                     data-toggle='tooltip' data-placement='top' title='Add to Wishlist'
                                                     th:attr="data-id=${product.product.id}"
-                                                    th:disabled="${!authenticated}"
+                                                <?php echo 'data-id="'.$_GET["id"].'"'; ?>
+                                                <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>
                                                     th:if="${!product.inWishList}">
                                                 <i class="far fa-heart"></i>
                                             </button>
@@ -161,7 +163,8 @@
                                                     data-toggle='tooltip' data-placement='top'
                                                     title='Remove from Wishlist'
                                                     th:attr="data-id=${product.product.id}"
-                                                    th:disabled="${!authenticated}"
+                                                <?php echo 'data-id="'.$_GET["id"].'"'; ?>
+                                                <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>
                                                     th:if="${product.inWishList}">
                                                 <i class="fas fa-heart"></i>
                                             </button>
