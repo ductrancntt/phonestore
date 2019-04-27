@@ -1,10 +1,10 @@
 <?php
-    if (!isset($_SESSION))
-        session_start();
+if (!isset($_SESSION))
+    session_start();
 
-    if (!(isset($_SESSION['signedIn']) && $_SESSION['signedIn'] && $_SESSION['isAdmin'])) {
-        header("location:./index.php");
-    }
+if (!(isset($_SESSION['signedIn']) && $_SESSION['signedIn'] && $_SESSION['isAdmin'])) {
+    header("location:./index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,8 +12,9 @@
 
 <head>
     <?php
-        include "header.php";
+    include "header.php";
     ?>
+    <title>Admin</title>
     <link rel="stylesheet" href="./css/admin.css"/>
 
     <link rel="stylesheet" type="text/css" href="./libs/datatables/datatables.min.css"/>
@@ -31,7 +32,7 @@
 <body id="page-top">
 
 <?php
-    include "navbar.php";
+include "navbar.php";
 ?>
 
 <div id="wrapper" class="admin-content">
@@ -53,40 +54,47 @@
             Management
         </div>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tables-link"
-               aria-expanded="true" aria-controls="tables-link">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Data</span>
+            <a class="nav-link" href="javascript: loadEmployeesPage()">
+                <i class="fas fa-coins"></i>
+                <span>Account</span>
             </a>
-            <div id="tables-link" class="collapse" aria-labelledby="headingTwo" data-parent="#side-bar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Tables</h6>
-                    <a class="collapse-item" href="javascript: loadEmployeesPage()">Employees</a>
-                    <a class="collapse-item" href="javascript: loadProductsPage()">Products</a>
-                    <a class="collapse-item" href="javascript: loadManufacturersPage()">Manufacturer</a>
-                    <a class="collapse-item" href="javascript: loadCustomersPage()">Customers</a>
-                    <a class="collapse-item" href="javascript: loadInvoicesPage()">Invoices</a>
-                </div>
-            </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript: loadManufacturersPage()">
+                <i class="fas fa-coins"></i>
+                <span>Manufacturers</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript: loadProductsPage()">
+                <i class="fas fa-coins"></i>
+                <span>Products</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript: loadInvoicesPage()">
+                <i class="fas fa-coins"></i>
+                <span>Invoices</span>
+            </a>
+        </li>
+
         <hr class="sidebar-divider">
+
         <div class="sidebar-heading">
             Analysis
         </div>
+
         <li class="nav-item">
             <a class="nav-link" href="javascript: loadRevenuePage()">
                 <i class="fas fa-coins"></i>
                 <span>Revenue</span></a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" href="javascript: loadTopSellersPage()">
                 <i class="fas fa-file-invoice-dollar"></i>
                 <span>Top Sellers</span></a>
         </li>
-        <hr class="sidebar-divider d-none d-md-block">
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
 
     </ul>
 
@@ -95,7 +103,7 @@
 
         </div>
         <?php
-            include "footer.php";
+        include "footer.php";
         ?>
     </div>
 
