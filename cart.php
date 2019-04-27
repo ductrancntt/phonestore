@@ -112,7 +112,7 @@ function getProductById($id)
                     </dl>
                     <hr>
                     <input <?php if(count($_SESSION["userCart"]) == 0) echo "disabled"; ?> type="button"
-                                                                                           onclick="window.location.href = './checkout.php'" class="btn btn-primary btn-block" value="Check Out">
+                                                                                           onclick="window.location.href = './checkout.php?diachi=Hanoi'" class="btn btn-primary btn-block" value="Check Out">
 
                 </aside> <!-- col.// -->
             </div>
