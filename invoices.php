@@ -77,9 +77,9 @@ if (isset($_SESSION["user_id"])) {
             </a>
         </li>
         <hr class="sidebar-divider d-none d-md-block">
-<!--        <div class="text-center d-none d-md-inline">-->
-<!--            <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
-<!--        </div>-->
+        <!--        <div class="text-center d-none d-md-inline">-->
+        <!--            <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
+        <!--        </div>-->
 
     </ul>
 
@@ -93,10 +93,9 @@ if (isset($_SESSION["user_id"])) {
                     <thead class="table-header">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Created Date</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Ship Address</th>
-                        <th>Status</th>
+                        <th style="text-align: right" scope="col">Created Date</th>
+                        <th  style="text-align: right" scope="col">Total</th>
+                        <th style="text-align: right">Status</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -107,14 +106,16 @@ if (isset($_SESSION["user_id"])) {
 
                         echo '<tr>
                             <th>' . $invoice["id"] . '</th>
-                            <th>' . $ymd . '</th>
-                            <th>' . number_format($invoice["total"]) . ' đ</th>
-                            <th>' . $invoice["ship_address"] . '</th>
-                            <th><button type="button" disabled class="btn '
-                            . ($invoice["status"] == 0 ? 'btn-primary"> Đã đặt' : ($invoice["status"] == 1 ? 'btn-warning"> Đang giao' : ($invoice["status"] == 2 ? 'btn-success"> Đã giao' : 'btn-danger"> Hủy'))) .
+                            <th style="text-align: right">' . $ymd . '</th>
+                            <th  style="text-align: right">' . number_format($invoice["total"]) . ' đ</th>
+                            <th style="text-align: right"><button type="button" disabled class="btn '
+                            . ($invoice["status"] == 0 ? 'btn-primary"> Đã đặt' : ($invoice["status"] == 1 ? 'btn-warning"> Đang giao' : ($invoice["status"] == 2 ? 'btn-success"> Đã giao' : 'btn-danger"> Đã Hủy'))) .
                             '</button></th>
-                            <th><button type="button" class="btn btn-primary" onclick="loadInvoiceDetail(' . $invoice["id"] . ')">Detail</button></th>
-                        </tr>';
+                            <th style="text-align: center"><button type="button" class="btn btn-primary" onclick="loadInvoiceDetail(' . $invoice["id"] . ')">Detail</button>';
+                        if($invoice["status"] != 3){
+                            echo '   <button type="button" class="btn btn-danger" onclick="cancel(' . $invoice["id"] . ')">Cancel</button>';
+                        }
+                        echo '</th></tr>';
                     }
                     ?>
 
@@ -126,12 +127,25 @@ if (isset($_SESSION["user_id"])) {
             $(document).ready(function () {
                 let display = false;
                 display = <?php if (isset($_SESSION["user_id"]) && isset($_GET["id"])) echo "true";
-                                else echo "false"; ?>;
+                else echo "false"; ?>;
                 if (display) {
                     $('#run').click();
                 }
+                let url = new URL(window.location.href);
+                let huy = url.searchParams.get("huy");
+                if(huy == 'success'){
+                    bootbox.alert("Hủy đơn hàng thành công!");
 
+                }
             })
+
+            function cancel(id) {
+                bootbox.confirm("Bạn có thực sự muốn hủy đơn hàng", function (r) {
+                    if (r) {
+                        window.location.href = "./service/cancel.php?id=" + id;
+                    }
+                })
+            }
 
             function loadInvoiceDetail(id) {
                 window.location.href = "./invoices.php?id=" + id;
@@ -167,15 +181,15 @@ if (isset($_SESSION["user_id"])) {
                             for ($i = 0; $i < count($itemList); $i++) {
                                 $item = $itemList[$i];
                                 $sum += $item["quantity"] * $item["order_price"];
-                                echo '<tr>
+                                echo '<tr> 
                                         <th scope="col">' . ($i + 1) . '</th>
                                         <th scope="col">' . $item["name"] . '</th>
-                                        <th scope="col">' . number_format($item["order_price"]) . '</th>
-                                        <th scope="col">' . $item["quantity"] . '</th>
-                                        <th scope="col">' . number_format($item["quantity"] * $item["order_price"]) . '</th>
+                                        <th style="text-align: right" scope="col">' . number_format($item["order_price"]) . ' đ</th>
+                                        <th style="text-align: right" scope="col">' . $item["quantity"] . '</th>
+                                        <th style="text-align: right" scope="col">' . number_format($item["quantity"] * $item["order_price"]) . ' đ</th>
                                     </tr>';
                             }
-                            echo "<tr><th colspan='4' scope='col' style='text-align: center'>Total Invoice</th><td>" . number_format($sum) . " ₫</td></tr>";
+                            echo "<tr><th  colspan='4' scope='col' style='text-align: center'>Total Invoice</th><td  style=\"text-align: right\">" . number_format($sum) . " ₫</td></tr>";
                             ?>
                             </tbody>
                         </table>

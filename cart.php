@@ -125,10 +125,12 @@ function getProductById($id)
         let url = new URL(window.location.href);
         let success = url.searchParams.get("success");
         if(success == 'true'){
-            alert("Đặt hàng thành công!");
-            window.location.href = "./home.php"
+            bootbox.alert("Đặt hàng thành công!", function () {
+                window.location.href = "./home.php"
+            });
+
         }else if(success == 'false'){
-            alert("Đặt hàng chưa thành công! Vui lòng thử lại");
+            bootbox.alert("Đặt hàng chưa thành công! Vui lòng thử lại");
         }
     })
 </script>
