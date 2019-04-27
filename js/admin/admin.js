@@ -51,45 +51,35 @@
 })(jQuery);
 
 let loadEmployeesPage = function () {
-    $("#content").load("/js/admin/manage-data/manage-employees.html");
+    $("#content").load("./js/admin/manage-data/manage-employees.html");
 }
 
 let loadProductsPage = function () {
-    $("#content").load("/js/admin/manage-data/manage-products.html");
+    $("#content").load("./js/admin/manage-data/manage-products.html");
 }
 
 let loadManufacturersPage = function () {
-    $("#content").load("/js/admin/manage-data/manage-manufacturers.html");
+    $("#content").load("./js/admin/manage-data/manage-manufacturers.html");
 }
 
 let loadCustomersPage = function () {
-    $("#content").load("/js/admin/manage-data/manage-customers.html");
+    $("#content").load("./js/admin/manage-data/manage-customers.html");
 }
 
 let loadInvoicesPage = function () {
-    $("#content").load("/js/admin/manage-data/manage-invoices.html");
+    $("#content").load("./js/admin/manage-data/manage-invoices.html");
 }
 
 let loadRevenuePage = function () {
-    $("#content").load("/js/admin/revenue/revenue.html");
+    $("#content").load("./js/admin/revenue/revenue.html");
 }
 
 let loadTopSellersPage = function () {
-    $("#content").load("/js/admin/top-sellers/top-sellers.html");
+    $("#content").load("./js/admin/top-sellers/top-sellers.html");
 }
 
 let loadDashboardPage = function () {
-    $("#content").load("/js/admin/dashboard/dashboard.html");
+    $("#content").load("./js/admin/dashboard/dashboard.html");
 }
-
-let stores = [];
-
-let initStores = function () {
-    $.get("/api/stores", function (response) {
-        stores = response;
-    });
-}
-
-initStores();
 
 loadDashboardPage();

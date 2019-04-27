@@ -4,7 +4,7 @@
 <script type="text/javascript" src="./libs/jquery/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css"/>
 <script type="text/javascript" src="./libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="./js/bootbox.all.min.js"></script>
+<script type="text/javascript" src="./libs/bootbox/bootbox.all.min.js"></script>
 <link rel="stylesheet" href="./libs/fontawesome/css/all.css"/>
 <link rel="stylesheet" href="./css/main.css"/>
 
