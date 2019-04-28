@@ -27,7 +27,7 @@ if (isset($_POST["toggle"])) {
 
 function getAll($page, $limit, $search)
 {
-    $queryCount = "SELECT * FROM `user`";
+    $queryCount = "SELECT * FROM `user` WHERE `username` LIKE '%$search%'";
     $offset = ($page - 1) * ($limit);
     $query = "SELECT * FROM `user` WHERE `username` LIKE '%$search%' LIMIT $limit OFFSET $offset ";
     $conn = new Connection();
