@@ -12,7 +12,7 @@ if (!(isset($_SESSION['signedIn']) && $_SESSION['signedIn'] && $_SESSION['isAdmi
 
 <head>
     <?php
-    include "header.php";
+        include "header.php";
     ?>
     <title>Admin</title>
     <link rel="stylesheet" href="./css/admin.css"/>
@@ -54,9 +54,9 @@ include "navbar.php";
             Management
         </div>
         <li class="nav-item">
-            <a class="nav-link" href="javascript: loadEmployeesPage()">
+            <a class="nav-link" href="javascript: loadAccountsPage()">
                 <i class="fas fa-coins"></i>
-                <span>Account</span>
+                <span>Accounts</span>
             </a>
         </li>
         <li class="nav-item">
@@ -71,31 +71,6 @@ include "navbar.php";
                 <span>Products</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="javascript: loadInvoicesPage()">
-                <i class="fas fa-coins"></i>
-                <span>Invoices</span>
-            </a>
-        </li>
-
-        <hr class="sidebar-divider">
-
-        <div class="sidebar-heading">
-            Analysis
-        </div>
-
-        <li class="nav-item">
-            <a class="nav-link" href="javascript: loadRevenuePage()">
-                <i class="fas fa-coins"></i>
-                <span>Revenue</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="javascript: loadTopSellersPage()">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <span>Top Sellers</span></a>
-        </li>
-
     </ul>
 
     <div id="content-wrapper" class="d-flex flex-column" style="padding-top: 15px">
