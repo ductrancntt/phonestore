@@ -27,7 +27,7 @@
                     "search": searchName
                 };
                 $.get(requestUrl, params, function (response) {
-                    accounts = response;
+                    accounts = response.data;
                     render({
                         "draw": requestParams.draw,
                         "recordsTotal": response.totalElements,
@@ -136,7 +136,7 @@
                                 "<button type='button' class='btn btn-info btn-table-employee font-responsive' data-id='" + data.id + "' style='margin-right: 10px;' data-toggle='modal' data-target='#account-modal'>" +
                                 "<i class='fas fa-pen'></i>" +
                                 "</button>" +
-                                "<button type='button' class='btn btn-success btn-table-employee font-responsive' data-id='" + data.id + "' data-toggle='modal' data-target='#account-enable-modal'>" +
+                                "<button style='width: 40px;' type='button' class='btn btn-success btn-table-employee font-responsive' data-id='" + data.id + "' data-toggle='modal' data-target='#account-enable-modal'>" +
                                 "<i class='fas fa-check'></i>" +
                                 "</button>" +
                                 "</div>";
@@ -145,7 +145,7 @@
                             "<button type='button' class='btn btn-info btn-table-employee font-responsive' data-id='" + data.id + "' style='margin-right: 10px;' data-toggle='modal' data-target='#account-modal'>" +
                             "<i class='fas fa-pen'></i>" +
                             "</button>" +
-                            "<button type='button' class='btn btn-danger btn-table-employee font-responsive' data-id='" + data.id + "' data-toggle='modal' data-target='#account-disable-modal'>" +
+                            "<button style='width: 40px;' type='button' class='btn btn-danger btn-table-employee font-responsive' data-id='" + data.id + "' data-toggle='modal' data-target='#account-disable-modal'>" +
                             "<i class='fas fa-times'></i>" +
                             "</button>" +
                             "</div>";
@@ -155,15 +155,12 @@
             ],
             drawCallback: function () {
                 $("button.btn.btn-info.btn-table-employee").click(function () {
-                    let acc = null;
                     for (let i = 0; i < accounts.length; i++) {
                         if (accounts[i].id == $(this).data("id")) {
-                            selectedId = accounts[i].id;
-                            acc = accounts[i];
+                            fillModal(accounts[i]);
                             break;
                         }
                     }
-                    fillModal(acc);
                 });
                 $("button.btn.btn-danger.btn-table-employee").click(function () {
                     selectedId = $(this).data("id");
@@ -235,10 +232,9 @@
         }
 
         $.post(requestUrl, account, function (response) {
-            console.log(response);
-            accountTable.ajax.reload();
             if (response.error == 0) {
                 $("#account-modal").modal('hide');
+                accountTable.ajax.reload();
             }
         });
 

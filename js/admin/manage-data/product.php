@@ -8,7 +8,7 @@ if (isset($_GET["getAll"])) {
 }
 
 if (isset($_POST["save"])) {
-    $result = saveEntity($_POST);
+    $result = saveEntity(json_decode($_POST["product"], true));
     echo json_encode($result);
 }
 
@@ -134,9 +134,12 @@ function update($entity)
     $conn = new Connection();
     $conn->createConnection();
     $result = $conn->excuteQuery($query);
-    $conn->closeConnection();
 
-    if ($result == false) return array("error" => 1, "message" => "Update product failed");
+    if ($result == false){
+        $conn->closeConnection();
+        return array("error" => 1, "message" => "Update product failed");
+    }
+    $conn->closeConnection();
     return array("error" => 0, "message" => "Update product successfully");
 }
 

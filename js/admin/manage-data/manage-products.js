@@ -2,6 +2,8 @@
     $(document).ready(function () {
         CKEDITOR.config.height = 100;
         CKEDITOR.replace('product-description');
+        // CKEDITOR.instances['description_content'].getData();
+
     })
 
     let manufacturerList = [];
@@ -12,6 +14,8 @@
 
     let productUrl = "/js/admin/manage-data/product.php";
     let manufacturerUrl = "/js/admin/manage-data/manufacturer.php";
+
+    let selectedId = null;
 
     let loadManufacturers = function () {
         $.get(manufacturerUrl, {getAll: "getAll"}, function (response) {
@@ -24,7 +28,6 @@
     }
 
     let renderTable = function () {
-        console.log("x");
         productTable = $("#product-table").DataTable({
             "pageLength": 10,
             "lengthMenu": [[10, 20, 30], [10, 20, 30]],
@@ -46,8 +49,7 @@
                     "search": searchName
                 };
                 $.get(productUrl, params, function (response) {
-                    products = response;
-                    console.log(products);
+                    products = response.data;
                     render({
                         "draw": requestParams.draw,
                         "recordsTotal": response.totalElements,
@@ -136,7 +138,7 @@
                 },
                 {
                     "render": function (data) {
-                        return data.memory + " GB";
+                        return data.memory;
                     },
                     "targets": 5
                 },
@@ -161,7 +163,11 @@
                                 break;
                             }
                         }
-                        return manu.name;
+                        if (manu.name){
+                            return manu.name;
+                        }
+                        return "N/A";
+
                     },
                     "targets": 8
                 },
@@ -187,139 +193,130 @@
             ],
             drawCallback: function () {
                 $("button.btn.btn-info.btn-table-product").click(function () {
-                    $("#product-modal-title").text("Edit Product");
-                    loadProductInfo($(this).data("id"));
+                    for (let i = 0; i < products.length; i++){
+                        if (products[i].id == $(this).attr("data-id")){
+                            fillModal(products[i]);
+                            break;
+                        }
+                    }
                 });
                 $("button.btn.btn-danger.btn-table-product").click(function () {
-                    $.get("/api/product-stores/" + $(this).data("id"), function (response) {
-                        productStore = response;
-                    });
+                    selectedId = $(this).attr("data-id");
                 });
             }
         });
+    }
 
-        productTable.fixedHeader.enable(true);
+    function fillModal(data){
+        image = null;
+        if (data == null){
+            $("#product-modal-title").text("Add Product");
+            $("input[name='id']").val("");
+            $("input[name='product-name']").val("");
+            $("input[name='price']").val("100000");
+            CKEDITOR.instances['product-description'].setData("");
+            $("input[name='screen-size']").val("3.0");
+            $("input[name='memory']").val("");
+            $("input[name='chipset']").val("");
+            $("#manufacturer-selector").val();
+            $("input[name='quantity']").val(0);
+        } else {
+            $("#product-modal-title").text("Edit Product");
+            $("input[name='id']").val(data.id);
+            $("input[name='product-name']").val(data.name);
+            $("input[name='price']").val(data.price);
+            CKEDITOR.instances['product-description'].setData(data.description);
+            $("input[name='screen-size']").val(data.screen_size);
+            $("input[name='memory']").val(data.memory);
+            $("input[name='chipset']").val(data.chipset);
+            $("#manufacturer-selector").val(data.manufacturer_id);
+            $("input[name='quantity']").val(data.quantity);
+        }
     }
 
     $("#save-product").click(function () {
-        let productName = $("input[name='product-name']").val();
+        console.log("click");
+        let id = $("input[name='id']").val();
+        let name = $("input[name='product-name']").val();
         let price = $("input[name='price']").val();
-        let screenSize = $("input[name='screen-size']").val();
-        let description = $("textarea[name='product-description']").val();
-        let manufacturerId = $("#manufacturer-selector").val();
+        let description = CKEDITOR.instances['product-description'].getData();
+        let screen_size = $("input[name='screen-size']").val();
+        let memory = $("input[name='memory']").val();
+        let chipset = $("input[name='chipset']").val();
+        let manufacturer_id = $("#manufacturer-selector").val();
+        let quantity = $("input[name='quantity']").val();
 
-        if (productStore == null) {
-            let productStores = [];
-            stores.forEach(function (store) {
-                let quantity = $("#" + store.id).val();
-                productStores.push({
-                    id: null,
-                    productId: null,
-                    storeId: store.id,
-                    quantity: quantity
-                });
-            });
-            productStore = {
-                product: {
-                    id: null,
-                    manufacturerId: manufacturerId,
-                    productName: productName,
-                    price: price,
-                    screenSize: screenSize,
-                    description: description,
-                    url: "image/no_image.png",
-                    deleted: false
-                },
-                productStores: productStores
-            }
-        } else {
-            let storeId = productStore.store.id;
-            let quantity = $("#" + storeId).val();
-            let productId = productStore.product.id;
-            let url = productStore.product.url;
-            let productStores = [];
-            productStores.push({
-                id: productStore.id,
-                productId: productId,
-                storeId: storeId,
-                quantity: quantity
-            });
-            productStore = {
-                product: {
-                    id: productId,
-                    manufacturerId: manufacturerId,
-                    productName: productName,
-                    price: price,
-                    screenSize: screenSize,
-                    description: description,
-                    url: url,
-                    deleted: false
-                },
-                productStores: productStores
-            }
+        let product = {
+            id: id,
+            name: name,
+            price: price,
+            description: description,
+            screen_size: screen_size,
+            memory: memory,
+            chipset: chipset,
+            manufacturer_id: manufacturer_id,
+            quantity: quantity,
+            image: null,
         }
 
         let formData = new FormData();
+        formData.append("save", "save");
         formData.append("image", image);
-        formData.append("product", new Blob([JSON.stringify(productStore)], {type: "application/json"}));
+        formData.append('product', JSON.stringify(product));
+
+        // for (let prop in product) {
+        //     if (product.hasOwnProperty(prop)) {
+        //         formData.append('file-data[' + prop + ']', product[prop]);
+        //     }
+        // }
 
         $.ajax({
             type: "POST",
-            url: "/api/product-stores",
+            url: productUrl,
             data: formData,
             contentType: false,
             processData: false,
-            success: function () {
-                productTable.ajax.reload();
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.error == 0) {
+                    $("#product-modal").modal('hide');
+                    productTable.ajax.reload();
+                }
             },
             error: function () {
-                productTable.ajax.reload();
             }
-        });
+        })
 
-        $("#product-modal").modal('hide');
     });
 
     $("#delete-product").click(function () {
-        $.post("/api/products/delete/" + productStore.product.id, function () {
-            productTable.ajax.reload();
+        let params = {
+            delete: 'delete',
+            id: selectedId
+        };
+        $.post(productUrl, params , function (response) {
+            if (response.error == 0){
+                $("#product-delete-modal").modal('hide');
+                productTable.ajax.reload();
+            } else {
+                alert(response.message);
+            }
         });
 
-        $("#product-delete-modal").modal('hide');
     });
 
-    $("button[data-target='#product-modal']").click(function () {
-        productStore = null;
-        $("#product-modal-title").text("Add Product");
-        $("input[name='product-name']").val("");
-        $("input[name='price']").val("100000");
-        $("input[name='screen-size']").val("3.0");
-        $("textarea[name='product-description']").val("");
-        $("#product-store-quantity").empty();
-
-        stores.forEach(function (store) {
-            $("#product-store-quantity").append("<div class='input-group mb-3'>" +
-                "<div class='input-group-prepend'>" +
-                "<span class='input-group-text input-title'>" + store.storeName + "</span>" +
-                "</div>" +
-                "<input type='number' min='0' class='form-control font-responsive' id='" + store.id + "' value='0'>" +
-                "<div class='input-group-append'><span class='input-group-text font-responsive'>pcs</span></div>" +
-                "</div>");
-        });
-    });
+    $("#add-product").click(function () {
+        fillModal(null);
+    })
 
     $("#search-product-button").click(function () {
-        selectedStoreId = parseInt($("#selected-store-product-tab").data("id"));
-        productNameSearch = $("#product-search-input").val();
+        searchName = $("#product-search-input").val();
         productTable.ajax.reload();
     });
 
     $("#product-refresh-button").click(function () {
-        selectedStoreId = 0;
-        $("#selected-store-product-tab").text("All Stores");
-        $("#selected-store-product-tab").data("id", 0);
-        productNameSearch = "";
-        $("#product-search-input").val(productNameSearch);
+        searchName = "";
+        $("#product-search-input").val(searchName);
         productTable.ajax.reload();
     });
 
