@@ -54,14 +54,14 @@ function getAll($page, $limit, $search)
 function insert($user)
 {
     $query = "INSERT INTO `user` (`username`, `password`, `name`, `email`, `phone`, `address`, `enable`, `is_admin`) VALUES (" .
-        "'".$user['username'] . "'," .
-        "'".$user['password'] . "'," .
-        "'".$user['name'] . "'," .
-        "'".$user['email'] . "'," .
-        "'".$user['phone'] . "'," .
-        "'".$user['address'] . "'," .
-        "'".$user['enable'] . "'," .
-        "'".$user['is_admin'] . "'" .
+        "'" . $user['username'] . "'," .
+        "'" . $user['password'] . "'," .
+        "'" . $user['name'] . "'," .
+        "'" . $user['email'] . "'," .
+        "'" . $user['phone'] . "'," .
+        "'" . $user['address'] . "'," .
+        "'" . $user['enable'] . "'," .
+        "'" . $user['is_admin'] . "'" .
         ")";
 
     $conn = new Connection();
@@ -78,6 +78,8 @@ function insert($user)
         $conn->closeConnection();
         return array("error" => 1, "message" => "Create user failed");
     }
+
+    $conn->closeConnection();
     return array("error" => 0, "message" => "Create user successfully");
 }
 
@@ -114,16 +116,16 @@ function findByUsername($username)
 function update($user)
 {
     $old = findById($user["id"]);
-    if ($old == null) return false;
+    if ($old == null) return array("error" => 1, "message" => "Update user failed");
 
-    $query = "UPDATE `user` SET `username` = " . "'" . $user['username'] . "'".
-        ",`password` = " ."'". $user['password'] ."'".
-        ",`name` = " ."'". $user['name'] ."'".
-        ",`email` = " ."'". $user['email'] ."'".
-        ",`phone` = " ."'". $user['phone'] ."'".
-        ",`address` = " ."'". $user['address'] ."'".
-        ",`enable` = " ."'". $user['enable'] ."'".
-        ",`is_admin` = " ."'". $user['is_admin'] ."'".
+    $query = "UPDATE `user` SET `username` = " . "'" . $user['username'] . "'" .
+        ",`password` = " . "'" . $user['password'] . "'" .
+        ",`name` = " . "'" . $user['name'] . "'" .
+        ",`email` = " . "'" . $user['email'] . "'" .
+        ",`phone` = " . "'" . $user['phone'] . "'" .
+        ",`address` = " . "'" . $user['address'] . "'" .
+        ",`enable` = " . "'" . $user['enable'] . "'" .
+        ",`is_admin` = " . "'" . $user['is_admin'] . "'" .
         " WHERE `id` = " . $user['id'];
 
     $conn = new Connection();

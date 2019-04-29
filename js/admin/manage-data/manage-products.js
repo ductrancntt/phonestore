@@ -1,42 +1,30 @@
 (function ($) {
+    $(document).ready(function () {
+        CKEDITOR.config.height = 100;
+        CKEDITOR.replace('product-description');
+    })
 
     let manufacturerList = [];
     let productTable = null;
-    let productStore = null;
-    let productNameSearch = "";
-    let selectedStoreId = 0;
+    let searchName = "";
     let image = null;
+    let products = [];
+
+    let productUrl = "/js/admin/manage-data/product.php";
+    let manufacturerUrl = "/js/admin/manage-data/manufacturer.php";
 
     let loadManufacturers = function () {
-        $.get("/api/manufacturers", {manufacturerName: ""}, function (response) {
+        $.get(manufacturerUrl, {getAll: "getAll"}, function (response) {
             manufacturerList = response;
             $("#manufacturer-selector").empty();
             manufacturerList.forEach(function (manufacturer) {
-                $("#manufacturer-selector").append("<option value='" + manufacturer.id + "'>" + manufacturer.manufacturerName + "</option>");
+                $("#manufacturer-selector").append("<option value='" + manufacturer.id + "'>" + manufacturer.name + "</option>");
             });
         });
     }
 
-    let loadProductInfo = function (id) {
-        $.get("/api/product-stores/" + id, function (response) {
-            productStore = response;
-            $("input[name='product-name']").val(productStore.product.productName);
-            $("input[name='price']").val(productStore.product.price);
-            $("input[name='screen-size']").val(productStore.product.screenSize);
-            $("textarea[name='product-description']").val(productStore.product.description);
-            $("#manufacturer-selector").val(productStore.manufacturer.id);
-            $("#product-store-quantity").empty();
-            $("#product-store-quantity").append("<div class='input-group mb-3' style='display: none;'>" +
-                "<div class='input-group-prepend'>" +
-                "<span class='input-group-text input-title'>" + productStore.store.storeName + "</span>" +
-                "</div>" +
-                "<input type='number' min='0' class='form-control font-responsive' id='" + productStore.store.id + "' value='" + productStore.quantity + "'>" +
-                "<div class='input-group-append'><span class='input-group-text font-responsive'>pcs</span></div>" +
-                "</div>");
-        });
-    }
-
     let renderTable = function () {
+        console.log("x");
         productTable = $("#product-table").DataTable({
             "pageLength": 10,
             "lengthMenu": [[10, 20, 30], [10, 20, 30]],
@@ -52,17 +40,19 @@
             },
             "ajax": function (requestParams, render) {
                 let params = {
+                    "getAll": "getAll",
                     "page": (requestParams.start / requestParams.length) + 1,
                     "limit": requestParams.length,
-                    "storeId": selectedStoreId,
-                    "name": productNameSearch
+                    "search": searchName
                 };
-                $.get("/api/product-stores/page", params, function (response) {
+                $.get(productUrl, params, function (response) {
+                    products = response;
+                    console.log(products);
                     render({
                         "draw": requestParams.draw,
                         "recordsTotal": response.totalElements,
                         "recordsFiltered": response.totalElements,
-                        "data": response.content
+                        "data": response.data
                     });
                 });
             },
@@ -77,31 +67,35 @@
                 },
                 {
                     "data": null,
+                    "className": 'align-middle font-responsive'
+                },
+                {
+                    "data": null,
+                    "className": 'align-middle font-responsive'
+                },
+                {
+                    "data": null,
+                    "className": 'align-middle font-responsive'
+                },
+                {
+                    "data": null,
+                    "className": 'align-middle font-responsive'
+                },
+                {
+                    "data": null,
+                    "className": 'align-middle font-responsive'
+                },
+                {
+                    "data": null,
+                    "className": 'align-middle font-responsive'
+                },
+                {
+                    "data": null,
+                    "className": 'align-middle font-responsive'
+                },
+                {
+                    "data": null,
                     "className": 'align-middle'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
-                },
-                {
-                    "data": null,
-                    "className": 'align-middle font-responsive'
                 },
                 {
                     "data": null,
@@ -117,51 +111,65 @@
                 },
                 {
                     "render": function (data) {
-                        return data.product.productName;
+                        return data.name;
                     },
                     "targets": 1
                 },
                 {
                     "render": function (data) {
-                        return "<img src='" + data.product.url + "' style='max-width: 5vw'/>";
+                        return formatNumber(data.price) + " ₫";
+
                     },
                     "targets": 2
                 },
                 {
                     "render": function (data) {
-                        return data.manufacturer.manufacturerName;
+                        return data.description;
                     },
                     "targets": 3
                 },
                 {
                     "render": function (data) {
-                        return data.product.screenSize + " inch";
+                        return data.screen_size + " inch";
                     },
                     "targets": 4
                 },
                 {
                     "render": function (data) {
-                        return formatNumber(data.product.price) + " ₫";
+                        return data.memory + " GB";
                     },
                     "targets": 5
                 },
                 {
                     "render": function (data) {
-                        return data.store.storeName;
+                        return data.chipset;
                     },
                     "targets": 6
                 },
                 {
                     "render": function (data) {
-                        return data.quantity + " pcs";
+                        return "<img src='" + data.image + "' style='max-width: 5vw'/>";
                     },
                     "targets": 7
                 },
                 {
                     "render": function (data) {
-                        return data.product.description;
+                        let manu = {};
+                        for (let i = 0; i < manufacturerList.length; i++) {
+                            if (manufacturerList[i].id == data.manufacturer_id) {
+                                manu = manufacturerList[i];
+                                break;
+                            }
+                        }
+                        return manu.name;
                     },
                     "targets": 8
+                },
+                {
+                    "render": function (data) {
+                        return data.quantity + " pcs";
+                    },
+                    "targets": 9
                 },
                 {
                     "render": function (data) {
@@ -174,7 +182,7 @@
                             "</button>" +
                             "</div>";
                     },
-                    "targets": 9
+                    "targets": 10
                 }
             ],
             drawCallback: function () {
@@ -315,23 +323,9 @@
         productTable.ajax.reload();
     });
 
-    let initProductTab = function () {
-        $("#stores-product-tab").append("<a class='dropdown-item' href='#' data-id='0'>All Stores</a>");
-        stores.forEach(function (store) {
-            $("#stores-product-tab").append("<a class='dropdown-item' href='#' data-id='" + store.id + "'>" + store.storeName + "</a>");
-        });
-
-        $("#stores-product-tab a.dropdown-item").click(function () {
-            $("#selected-store-product-tab").text($(this).text());
-            $("#selected-store-product-tab").data("id", $(this).data("id"));
-        });
-    }
-
     $("#image-input").change(function () {
         image = this.files[0];
     });
-
-    initProductTab();
 
     loadManufacturers();
 

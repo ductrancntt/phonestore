@@ -67,4 +67,4 @@ let loadDashboardPage = function () {
 }
 
 
-loadAccountsPage();
+loadProductsPage();
