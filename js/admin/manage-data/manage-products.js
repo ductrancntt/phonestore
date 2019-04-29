@@ -2,8 +2,6 @@
     $(document).ready(function () {
         CKEDITOR.config.height = 100;
         CKEDITOR.replace('product-description');
-        // CKEDITOR.instances['description_content'].getData();
-
     })
 
     let manufacturerList = [];
@@ -281,6 +279,8 @@
                 if (response.error == 0) {
                     $("#product-modal").modal('hide');
                     productTable.ajax.reload();
+                } else {
+                    alert(response.message);
                 }
             },
             error: function () {

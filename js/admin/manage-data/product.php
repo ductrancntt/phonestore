@@ -56,7 +56,6 @@ function saveEntity($entity)
 
     if (isset($_FILES["image"])) {
         if ($_FILES["image"]["error"] == 1) {
-            echo json_encode();
             return array("error" => 1, "message" => "Image size is too large");
         }
         if ($_FILES["image"]["error"] != 0) {
