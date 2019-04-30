@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Apr 30, 2019 at 10:31 AM
+-- Generation Time: Apr 30, 2019 at 12:46 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.3
 
@@ -112,7 +112,7 @@ CREATE TABLE `manufacturer` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `deleted` tinyint(1) NOT NULL
+  `deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `product` (
   `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `manufacturer_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL DEFAULT '0',
-  `deleted` tinyint(1) NOT NULL
+  `deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -262,7 +262,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `name`, `address`, `phone`, `is_admin`, `enable`) VALUES
 (1, 'user', 'user', 'user@gmail.com', 'User', 'localhost', '0888888888', 0, 1),
-(2, 'admin', 'admin', 'admin@gmail.com', 'Admin', 'localhost', '0969696969', 0, 1);
+(2, 'admin', 'admin', 'admin@gmail.com', 'Admin', 'localhost', '0969696969', 1, 1);
 
 -- --------------------------------------------------------
 

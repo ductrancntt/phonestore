@@ -24,8 +24,8 @@ function getAll($params)
     $search = $params["search"];
     $offset = ($page - 1) * $limit;
 
-    $queryCount = "SELECT * FROM `product` WHERE `name` LIKE '%$search%'";
-    $queryData = "SELECT * FROM `product` WHERE `name` LIKE '%$search%' LIMIT $limit OFFSET $offset";
+    $queryCount = "SELECT * FROM `product` WHERE `name` LIKE '%$search%' AND `deleted` = '0'";
+    $queryData = "SELECT * FROM `product` WHERE `name` LIKE '%$search%' AND `deleted` = '0' LIMIT $limit OFFSET $offset";
 
     $response = array();
     $response["totalElements"] = 0;
@@ -96,7 +96,7 @@ function findById($id){
 
 function insert($entity)
 {
-    $query = "INSERT INTO `product` (`name`, `price`, `description`, `screen_size`, `memory`, `chipset`, `image`, `manufacturer_id`, `quantity`) VALUES (" .
+    $query = "INSERT INTO `product` (`name`, `price`, `description`, `screen_size`, `memory`, `chipset`, `image`, `manufacturer_id`, `quantity`, `deleted`) VALUES (" .
         "'" . $entity['name'] . "'," .
         "'" . $entity['price'] . "'," .
         "'" . $entity['description'] . "'," .
@@ -105,7 +105,8 @@ function insert($entity)
         "'" . $entity['chipset'] . "'," .
         "'" . $entity['image'] . "'," .
         "'" . $entity['manufacturer_id'] . "'," .
-        "'" . $entity['quantity'] . "'" .
+        "'" . $entity['quantity'] . "'," .
+        "'0'" .
         ")";
 
     $conn = new Connection();
@@ -144,7 +145,7 @@ function update($entity)
 
 function delete($id)
 {
-    $query = "DELETE FROM `product` WHERE `id` = $id";
+    $query = "UPDATE `product` SET `deleted` = '1' WHERE `id` = $id";
     $conn = new Connection();
     $conn->createConnection();
     $result = $conn->excuteQuery($query);

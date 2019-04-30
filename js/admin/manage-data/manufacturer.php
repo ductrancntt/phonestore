@@ -2,9 +2,9 @@
 header('Content-Type: application/json');
 require "../../../service/Connection.php";
 
-if (isset($_GET["getAll"])){
+if (isset($_GET["getAll"])) {
     $result = getAll($_GET);
-        echo json_encode($result);
+    echo json_encode($result);
 }
 
 if (isset($_POST["save"])) {
@@ -12,7 +12,7 @@ if (isset($_POST["save"])) {
     echo json_encode($result);
 }
 
-if (isset($_POST["delete"])){
+if (isset($_POST["delete"])) {
     $result = delete($_POST["id"]);
     echo json_encode($result);
 }
@@ -41,9 +41,9 @@ function saveEntity($entity)
     if ($entity["id"] == null || $entity["id"] == "") {
         $result = insert($entity);
     } else {
-        if ($image == "./image/no_image.png"){
+        if ($image == "./image/no_image.png") {
             $manufacturer = findById($entity["id"]);
-            if ($manufacturer != false){
+            if ($manufacturer != false) {
                 $entity["image"] = $manufacturer["image"];
             }
         }
@@ -52,7 +52,8 @@ function saveEntity($entity)
     return $result;
 }
 
-function findById($id){
+function findById($id)
+{
     $query = "SELECT * FROM `manufacturer` WHERE `id` = $id";
     $conn = new Connection();
     $conn->createConnection();
@@ -61,16 +62,16 @@ function findById($id){
     return $result->fetch_assoc();
 }
 
-function getAll($params){
+function getAll($params)
+{
     $page = $params["page"];
     $limit = $params["limit"];
     $search = $params["search"];
     $offset = ($page - 1) * $limit;
 
-    $queryAll = "SELECT * FROM `manufacturer`";
-
-    $queryCount = "SELECT * FROM `manufacturer` WHERE `name` LIKE '%$search%'";
-    $queryData = "SELECT * FROM `manufacturer` WHERE `name` LIKE '%$search%' LIMIT $limit OFFSET $offset";
+    $queryAll = "SELECT * FROM `manufacturer` WHERE `deleted` = '0'";
+    $queryCount = "SELECT * FROM `manufacturer` WHERE `name` LIKE '%$search%' AND `deleted` = '0'";
+    $queryData = "SELECT * FROM `manufacturer` WHERE `name` LIKE '%$search%' AND `deleted` = '0' LIMIT $limit OFFSET $offset";
 
     $response = array();
     $response["totalElements"] = 0;
@@ -79,9 +80,9 @@ function getAll($params){
     $conn = new Connection();
     $conn->createConnection();
 
-    if ($limit == 0 || $limit == "0"){
+    if ($limit == 0 || $limit == "0") {
         $all = $conn->excuteQuery($queryAll);
-        if ($all == false){
+        if ($all == false) {
             $conn->closeConnection();
             return $response;
         }
@@ -110,10 +111,11 @@ function getAll($params){
 
 function insert($entity)
 {
-    $query = "INSERT INTO `manufacturer` (`name`, `address`, `image`) VALUES (" .
+    $query = "INSERT INTO `manufacturer` (`name`, `address`, `image`, `deleted`) VALUES (" .
         "'" . $entity['name'] . "'," .
         "'" . $entity['address'] . "'," .
-        "'" . $entity['image'] . "'" .
+        "'" . $entity['image'] . "'," .
+        "'0'" .
         ")";
 
     $conn = new Connection();
@@ -136,7 +138,7 @@ function update($entity)
     $conn->createConnection();
     $result = $conn->excuteQuery($query);
 
-    if ($result == false){
+    if ($result == false) {
         $conn->closeConnection();
         return array("error" => 1, "message" => "Update manufacturer failed");
     }
@@ -146,7 +148,7 @@ function update($entity)
 
 function delete($id)
 {
-    $query = "DELETE FROM `manufacturer` WHERE `id` = $id";
+    $query = "UPDATE `manufacturer` SET `deleted`='1' WHERE `id` = $id";
     $conn = new Connection();
     $conn->createConnection();
     $result = $conn->excuteQuery($query);
