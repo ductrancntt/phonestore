@@ -1,13 +1,13 @@
 <?php
-    if (!isset($_SESSION))
-        session_start();
+if (!isset($_SESSION))
+    session_start();
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <?php
-        include "header.php";
+    include "header.php";
     ?>
 
     <title>Product Detail</title>
@@ -17,35 +17,35 @@
     <script src="./libs/fancybox/jquery.fancybox.min.js" type="text/javascript"></script>
 
     <style>
-        .btn-add-to-wish-list{
+        .btn-add-to-wish-list {
         }
     </style>
 </head>
 <body>
 <?php
-    include "navbar.php";
+include "navbar.php";
 ?>
 <?php
-    require "./service/Connection.php";
-    $product = null;
-    if(isset($_GET["id"])){
-        $connection = new Connection();
-        $connection->createConnection();
-        $sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id  WHERE p.id = ".$_GET["id"];
+require "./service/Connection.php";
+$product = null;
+if (isset($_GET["id"])) {
+    $connection = new Connection();
+    $connection->createConnection();
+    $sql = "SELECT p.*, m.name as manufacturer_name  FROM product p JOIN manufacturer m ON m.id = p.manufacturer_id  WHERE p.id = " . $_GET["id"];
 
-        $result = $connection->excuteQuery($sql);
-        
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $product = $row;
-                break;
-            }
-            $connection->closeConnection();
+    $result = $connection->excuteQuery($sql);
 
-        } else {
-            $connection->closeConnection();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $product = $row;
+            break;
         }
+        $connection->closeConnection();
+
+    } else {
+        $connection->closeConnection();
     }
+}
 ?>
 <div>
     <section class="section-content bg padding-y-sm">
@@ -54,7 +54,8 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="./home.php">Home</a></li>
                     <li class="breadcrumb-item"><a
-                            <?php echo 'href="./search-result.php?manufacturers='.$product["manufacturer_id"].'"'; ?>><?php echo $product["manufacturer_name"]; ?></a></li>
+                            <?php echo 'href="./search-result.php?manufacturers=' . $product["manufacturer_id"] . '"'; ?>><?php echo $product["manufacturer_name"]; ?></a>
+                    </li>
                     <li class="breadcrumb-item active"><span><?php echo $product["name"]; ?></span></li>
                 </ol>
             </nav>
@@ -68,14 +69,14 @@
                                 <article class="gallery-wrap">
                                     <div class="img-big-wrap">
                                         <div id="product-image" data-scale="1.25" style="transition: transform 0.2s">
-                                            <a <?php echo "href='".$product["image"]."'"; ?> data-fancybox="">
-                                                <?php echo '<img src='.$product["image"].'>'; ?>
+                                            <a <?php echo "href='" . $product["image"] . "'"; ?> data-fancybox="">
+                                                <?php echo '<img src=' . $product["image"] . '>'; ?>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="img-small-wrap">
                                         <div class="item-gallery">
-                                            <?php echo '<img src='.$product["image"].'>'; ?>
+                                            <?php echo '<img src=' . $product["image"] . '>'; ?>
                                         </div>
                                     </div>
                                 </article>
@@ -87,29 +88,33 @@
                                     <div class="mb-3">
                                         <var class="price h3 text-warning">
                                             <span>Price: </span>
-                                            <span class="num"><?php echo number_format($product["price"])." đ"; ?></span>
+                                            <span class="num"><?php echo number_format($product["price"]) . " đ"; ?></span>
                                         </var>
                                     </div>
-                                    <dl>
-                                        <dt>Description</dt>
-                                        <dd><p ><?php echo $product["description"]; ?></p></dd>
-                                    </dl>
+
                                     <dl class="row">
                                         <dt class="col-sm-5">Screen Size</dt>
                                         <dd class="col-sm-7">
-                                            <span ><?php echo $product["screen_size"]; ?></span>
+                                            <span><?php echo $product["screen_size"]; ?></span>
                                             <span> inch</span>
                                         </dd>
+                                        <dt class="col-sm-5">Memory</dt>
+                                        <dd class="col-sm-7">
+                                            <span><?php echo $product["memory"]; ?></span>
+                                        </dd>
+                                        <dt class="col-sm-5">Chipset</dt>
+                                        <dd class="col-sm-7">
+                                            <span><?php echo $product["chipset"]; ?></span>
+                                        </dd>
 
-                                       
                                         <dt class="col-sm-5">Quantity</dt>
                                         <?php
-                                            if($product["quantity"] == 0){
-                                                echo '<dd class="col-sm-7 text-danger font-weight-bold">Out of stock
+                                        if ($product["quantity"] == 0) {
+                                            echo '<dd class="col-sm-7 text-danger font-weight-bold">Out of stock
                                                     </dd>';
-                                            }else{
-                                                echo '<dd class="col-sm-7">'.$product["quantity"].'</dd>';
-                                            }
+                                        } else {
+                                            echo '<dd class="col-sm-7">' . $product["quantity"] . '</dd>';
+                                        }
                                         ?>
 
                                         <dt class="col-sm-5">Shipping</dt>
@@ -119,6 +124,13 @@
                                     </dl>
 
                                     <hr>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <?php echo $product["description"]; ?>
+                                        </div>
+                                    </div>
+                                    <hr>
                                     <div class="row">
                                         <div class="col-sm-7">
                                             <div class="input-group">
@@ -127,54 +139,32 @@
                                                 </div>
                                                 <input id="quantity-input" type="number" min="1" value="1"
                                                        class="form-control" style="text-align: center;"
-                                                    <?php echo 'data-id="'.$_GET["id"].'"'; ?>
-                                                    <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
+                                                    <?php echo 'data-id="' . $_GET["id"] . '"'; ?>
+                                                    <?php if (!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
                                             </div>
                                         </div>
                                         <div class="col-sm-5">
 
                                             <button type="button" class="btn btn-primary btn-add-to-cart"
                                                     style="width: 60%"
-                                                    <?php echo 'data-id="'.$_GET["id"].'"'; ?>
-                                                    <?php if(!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
+                                                <?php echo 'data-id="' . $_GET["id"] . '"'; ?>
+                                                <?php if (!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
                                                 <i class='fas fa-cart-plus'></i>
-                                                <span> CART</span>
+                                                <span onclick=""> CART</span>
                                             </button>
                                         </div>
                                     </div>
-                                    <hr>
-
                                 </article>
                             </aside>
                         </div>
                     </main>
 
-                    <article class="card mt-3">
-                        <div class="card-body">
-                            <h4>Product Detail</h4>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui officia ididunt ut labore et dolore magna aliqua. Ut enim ad
-                                minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi deserunt mollit anim id est laborum.</p>
-                        </div>
-                    </article>
-
-                    <article class="card mt-3">
-                        <div class="card-body">
-                            <h4>Customer Reviews</h4>
-                            <div id="customer-reviews">
-                                <div class="text-secondary h3"
-                                     style="height: 100px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                                    <span>No review</span>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
+<!--                    <article class="card mt-3">-->
+<!--                        <div class="card-body">-->
+<!--                            <h4>Product Detail</h4>-->
+<!--                            <p>--><?php //echo $product["description"]; ?><!--</p>-->
+<!--                        </div>-->
+<!--                    </article>-->
                 </div>
                 <aside class="col-xl-2 col-md-3 col-sm-12">
                     <div class="card">
@@ -262,7 +252,7 @@
     </div>
 </div>
 <?php
-    include "footer.php";
+include "footer.php";
 ?>
 <script type="text/javascript" src="./js/product-detail.js"></script>
 </body>

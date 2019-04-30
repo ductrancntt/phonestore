@@ -136,8 +136,11 @@
                         if (total > 0) {
                             $("#number-cart").text(total);
                         }
-                        else
+                        else if(total == 0)
                             $("#number-cart").text('');
+                        else{
+                            bootbox.alert("Mặt hàng không còn đủ số lượng. Vui lòng kiểm tra lại");
+                        }
                     }
                 })
 
