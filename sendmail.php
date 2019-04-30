@@ -6,8 +6,8 @@ include("PHPMailer.php");
 use PHPMailer\PHPMailer\PHPMailer;
 function sendMail($to){
 	$nFrom = "no-reply";    //mail duoc gui tu dau, thuong de ten cong ty ban
-	$mFrom = 'manhtoan159@gmail.com';  //dia chi email cua ban 
-	$mPass = 'Anhtoan1997';       //mat khau email cua ban
+	$mFrom = 'phoneshopptit@gmail.com';  //dia chi email cua ban
+	$mPass = 'abc@@123';       //mat khau email cua ban
 
 	$mail = new PHPMailer();
 	$body = 'Bạn đã đặt hàng thành công!';   // Noi dung email
@@ -23,7 +23,7 @@ function sendMail($to){
 	$mail->Username   = $mFrom;  // khai bao dia chi email
 	$mail->Password   = $mPass;              // khai bao mat khau
 	$mail->SetFrom($mFrom, $nFrom);
-	$mail->AddReplyTo('manhtoan159@gmail.com', 'Toantm'); //khi nguoi dung phan hoi se duoc gui den email nay
+	$mail->AddReplyTo('phoneshopptit@gmail.com', 'phoneshop'); //khi nguoi dung phan hoi se duoc gui den email nay
 	$mail->Subject    = $title;// tieu de email 
 	$mail->MsgHTML($body);// noi dung chinh cua mail se nam o day.
 	$mail->AddAddress($to, $to);
