@@ -43,25 +43,25 @@ include "navbar.php";
             </div>
             <div class="sidebar-brand-text mx-3">Admin</div>
         </div>
-        <hr class="sidebar-divider my-0">
-        <li class="nav-item active">
-            <a class="nav-link" href="javascript: loadDashboardPage()">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
-        </li>
-        <hr class="sidebar-divider">
+<!--        <hr class="sidebar-divider my-0">-->
+<!--        <li class="nav-item active">-->
+<!--            <a class="nav-link" href="javascript: loadDashboardPage()">-->
+<!--                <i class="fas fa-fw fa-tachometer-alt"></i>-->
+<!--                <span>Dashboard</span></a>-->
+<!--        </li>-->
+<!--        <hr class="sidebar-divider">-->
         <div class="sidebar-heading">
             Management
         </div>
         <li class="nav-item">
             <a class="nav-link" href="javascript: loadAccountsPage()">
-                <i class="fas fa-coins"></i>
+                <i class="fas fa-user"></i>
                 <span>Accounts</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="javascript: loadManufacturersPage()">
-                <i class="fas fa-coins"></i>
+                <i class="fas fa-industry"></i>
                 <span>Manufacturers</span>
             </a>
         </li>

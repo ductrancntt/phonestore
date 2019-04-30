@@ -202,7 +202,6 @@
     }
 
     $("#save-account").click(function () {
-        console.log("abc");
         let id = $("input[name='id']").val();
         let name = $("input[name='account-name']").val();
         let phone = $("input[name='phone']").val();
@@ -234,7 +233,9 @@
         $.post(requestUrl, account, function (response) {
             if (response.error == 0) {
                 $("#account-modal").modal('hide');
-                accountTable.ajax.reload();
+                accountTable.ajax.reload(null, false);
+            } else {
+                alert(response.message);
             }
         });
 
@@ -248,10 +249,11 @@
         }
 
         $.post(requestUrl, account, function (response) {
-            console.log(response);
-            accountTable.ajax.reload();
             if (response.error == 0) {
                 $("#account-disable-modal").modal('hide');
+                accountTable.ajax.reload(null, false);
+            } else {
+                alert(response.message);
             }
         });
     });
@@ -264,10 +266,11 @@
         }
 
         $.post(requestUrl, account, function (response) {
-            console.log(response);
-            accountTable.ajax.reload();
             if (response.error == 0) {
                 $("#account-enable-modal").modal('hide');
+                accountTable.ajax.reload(null, false);
+            } else {
+                alert(response.message);
             }
         });
     });

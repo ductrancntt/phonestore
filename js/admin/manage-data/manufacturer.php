@@ -3,131 +3,157 @@ header('Content-Type: application/json');
 require "../../../service/Connection.php";
 
 if (isset($_GET["getAll"])){
-    $data = getAll();
-    echo json_encode($data);
+    $result = getAll($_GET);
+        echo json_encode($result);
 }
 
-if (isset($_POST["deleteId"])){
-    delete($_POST["deleteId"]);
-    $data = getAll();
-    echo json_encode($data);
+if (isset($_POST["save"])) {
+    $result = saveEntity(json_decode($_POST["entity"], true));
+    echo json_encode($result);
 }
 
-if (isset($_POST["name"])) {
-    saveEntity();
+if (isset($_POST["delete"])){
+    $result = delete($_POST["id"]);
+    echo json_encode($result);
 }
 
-function saveEntity(){
-    $id = $_POST["id"];
-    $name = $_POST["name"];
-    $address = $_POST["address"];
-    $image = "";
-
-    if ($name == "") return;
-
+function saveEntity($entity)
+{
+    $image = "./image/no_image.png";
 
     if (isset($_FILES["image"])) {
-        if ($_FILES["image"]["error"] == 1){
-            echo json_encode(array('error' => 'Image size is too large!' ));
-            return;
+        if ($_FILES["image"]["error"] == 1) {
+            return array("error" => 1, "message" => "Image size is too large");
         }
-        if ($_FILES["image"]["error"] != 0){
-            echo json_encode(array('error' => 'Error upload image!' ));
-            return;
+        if ($_FILES["image"]["error"] != 0) {
+            return array("error" => 1, "message" => "Error upload image");
         }
         $path = $_FILES["image"]["name"];
         $ext = pathinfo($path, PATHINFO_EXTENSION);
         $milliseconds = (int)round(microtime(true) * 1000);
         $targetUrl = "../../../image/" . $milliseconds . "." . $ext;
-        $image = "/image/" . $milliseconds . "." . $ext;
+        $image = "./image/" . $milliseconds . "." . $ext;
         move_uploaded_file($_FILES["image"]["tmp_name"], $targetUrl);
     }
 
+    $entity["image"] = $image;
 
-    if ($id == "null"){
-        if ($image == "") $image = "/image/no_image.png";
-        insert($name, $address, $image);
+    if ($entity["id"] == null || $entity["id"] == "") {
+        $result = insert($entity);
     } else {
-        if ($image == ""){
-            $object = findById($id);
-            $image = $object["image"];
+        if ($image == "./image/no_image.png"){
+            $manufacturer = findById($entity["id"]);
+            if ($manufacturer != false){
+                $entity["image"] = $manufacturer["image"];
+            }
         }
-        update($id, $name, $address, $image);
+        $result = update($entity);
     }
-    echo json_encode(array('message' => 'Save successfully' ));
+    return $result;
 }
 
-if (isset($_REQUEST["search"])){
-    $data = searchByKeyword($_REQUEST["search"]);
-    echo json_encode($data);
-}
-
-function findById($id)
-{
-    $connection = new Connection;
-    $connection->createConnection();
-
+function findById($id){
     $query = "SELECT * FROM `manufacturer` WHERE `id` = $id";
-    $result = $connection->excuteQuery($query);
-    if ($result == false || $result->num_rows <= 0) {
-        $connection->closeConnection();
-        return null;
-    }
-
-    $row = $result->fetch_assoc();
-    $connection->closeConnection();
-    return $row;
-}
-
-function searchByKeyword($keyword){
-    $query = "SELECT * FROM `manufacturer` WHERE `name` LIKE '%$keyword%'";
     $conn = new Connection();
     $conn->createConnection();
     $result = $conn->excuteQuery($query);
     $conn->closeConnection();
-    $response = array();
-    while($row = $result->fetch_assoc()){
-        array_push($response, $row);
-    }
-    return $response;
+    return $result->fetch_assoc();
 }
 
-function getAll(){
-    $query = "SELECT * FROM `manufacturer`";
+function getAll($params){
+    $page = $params["page"];
+    $limit = $params["limit"];
+    $search = $params["search"];
+    $offset = ($page - 1) * $limit;
+
+    $queryAll = "SELECT * FROM `manufacturer`";
+
+    $queryCount = "SELECT * FROM `manufacturer` WHERE `name` LIKE '%$search%'";
+    $queryData = "SELECT * FROM `manufacturer` WHERE `name` LIKE '%$search%' LIMIT $limit OFFSET $offset";
+
+    $response = array();
+    $response["totalElements"] = 0;
+    $response["data"] = array();
+
     $conn = new Connection();
     $conn->createConnection();
-    $result = $conn->excuteQuery($query);
-    $conn->closeConnection();
-    $response = array();
-    while($row = $result->fetch_assoc()){
-        array_push($response, $row);
+
+    if ($limit == 0 || $limit == "0"){
+        $all = $conn->excuteQuery($queryAll);
+        if ($all == false){
+            $conn->closeConnection();
+            return $response;
+        }
+        while ($row = $all->fetch_assoc()) {
+            array_push($response["data"], $row);
+        }
+        $conn->closeConnection();
+        return $response;
     }
+
+    $count = $conn->excuteQuery($queryCount);
+    $data = $conn->excuteQuery($queryData);
+
+    if ($data == false || $count == false) {
+        $conn->closeConnection();
+        return $response;
+    }
+
+    $response["totalElements"] = $count->num_rows;
+    while ($row = $data->fetch_assoc()) {
+        array_push($response["data"], $row);
+    }
+    $conn->closeConnection();
     return $response;
 }
 
-function insert($name, $address, $image)
+function insert($entity)
 {
-    $query = "INSERT INTO `manufacturer` (`name`, `address`, `image`) 
-        VALUES ('".$name."', '".$address."', '".$image."')";
+    $query = "INSERT INTO `manufacturer` (`name`, `address`, `image`) VALUES (" .
+        "'" . $entity['name'] . "'," .
+        "'" . $entity['address'] . "'," .
+        "'" . $entity['image'] . "'" .
+        ")";
 
-    $conn = new Connection;
+    $conn = new Connection();
     $conn->createConnection();
-    $conn->excuteQuery($query);
+    $result = $conn->excuteQuery($query);
     $conn->closeConnection();
+
+    if ($result == false) return array("error" => 1, "message" => "Create manufacturer failed");
+    return array("error" => 0, "message" => "Create manufacturer successfully");
 }
 
-function update($id, $name, $address, $image){
-    $query = "UPDATE `manufacturer` SET `name` = '$name', `address` = '$address', `image` = '$image' WHERE `id` = $id";
-    $conn = new Connection;
+function update($entity)
+{
+    $query = "UPDATE `manufacturer` SET `name` = " . "'" . $entity['name'] . "'" .
+        ",`address` = " . "'" . $entity['address'] . "'" .
+        ",`image` = " . "'" . $entity['image'] . "'" .
+        " WHERE `id` = " . $entity['id'];
+
+    $conn = new Connection();
     $conn->createConnection();
-    $conn->excuteQuery($query);
+    $result = $conn->excuteQuery($query);
+
+    if ($result == false){
+        $conn->closeConnection();
+        return array("error" => 1, "message" => "Update manufacturer failed");
+    }
     $conn->closeConnection();
+    return array("error" => 0, "message" => "Update manufacturer successfully");
 }
 
-function delete($id){
-    $query = "DELETE FROM `manufacturer` WHERE `id` = '$id'";
-    $conn = new Connection;
+function delete($id)
+{
+    $query = "DELETE FROM `manufacturer` WHERE `id` = $id";
+    $conn = new Connection();
     $conn->createConnection();
-    $conn->excuteQuery($query);
+    $result = $conn->excuteQuery($query);
+    if ($result == false) {
+        $conn->closeConnection();
+        return array("error" => 1, "message" => "Delete product failed");
+    }
     $conn->closeConnection();
+    return array("error" => 0, "message" => "Delete product successfully");
 }

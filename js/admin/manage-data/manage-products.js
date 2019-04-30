@@ -16,8 +16,8 @@
     let selectedId = null;
 
     let loadManufacturers = function () {
-        $.get(manufacturerUrl, {getAll: "getAll"}, function (response) {
-            manufacturerList = response;
+        $.get(manufacturerUrl, {getAll: "getAll", limit: 0, page: 1, search: ""}, function (response) {
+            manufacturerList = response.data;
             $("#manufacturer-selector").empty();
             manufacturerList.forEach(function (manufacturer) {
                 $("#manufacturer-selector").append("<option value='" + manufacturer.id + "'>" + manufacturer.name + "</option>");
@@ -178,10 +178,10 @@
                 {
                     "render": function (data) {
                         return "<div class='table-right-button'>" +
-                            "<button type='button' class='btn btn-info btn-table-product font-responsive' data-id='" + data.id + "' style='margin-right: 10px;' data-toggle='modal' data-target='#product-modal'>" +
+                            "<button style='min-width: 40px; margin: 2px' type='button' class='btn btn-info btn-table-product font-responsive' data-id='" + data.id + "' style='margin-right: 10px;' data-toggle='modal' data-target='#product-modal'>" +
                             "<i class='fas fa-pen'></i>" +
                             "</button>" +
-                            "<button type='button' class='btn btn-danger btn-table-product font-responsive' data-id='" + data.id + "' data-toggle='modal' data-target='#product-delete-modal'>" +
+                            "<button style='min-width: 40px; margin: 2px' type='button' class='btn btn-danger btn-table-product font-responsive' data-id='" + data.id + "' data-toggle='modal' data-target='#product-delete-modal'>" +
                             "<i class='fas fa-times'></i>" +
                             "</button>" +
                             "</div>";
@@ -278,7 +278,7 @@
             success: function (response) {
                 if (response.error == 0) {
                     $("#product-modal").modal('hide');
-                    productTable.ajax.reload();
+                    productTable.ajax.reload(null, false);
                 } else {
                     alert(response.message);
                 }
@@ -297,7 +297,7 @@
         $.post(productUrl, params , function (response) {
             if (response.error == 0){
                 $("#product-delete-modal").modal('hide');
-                productTable.ajax.reload();
+                productTable.ajax.reload(null, false);
             } else {
                 alert(response.message);
             }
