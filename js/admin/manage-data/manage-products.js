@@ -279,7 +279,7 @@
 
         let check = validateForm(product);
         if (!check.valid) {
-            alert(check.message);
+            AlertService.error(check.message)
             return;
         }
 
@@ -305,8 +305,9 @@
                 if (response.error == 0) {
                     $("#product-modal").modal('hide');
                     productTable.ajax.reload(null, false);
+                    AlertService.success(response.message)
                 } else {
-                    alert(response.message);
+                    AlertService.error(response.message)
                 }
             },
             error: function () {
@@ -324,8 +325,9 @@
             if (response.error == 0) {
                 $("#product-delete-modal").modal('hide');
                 productTable.ajax.reload(null, false);
+                AlertService.success(response.message)
             } else {
-                alert(response.message);
+                AlertService.error(response.message)
             }
         });
 

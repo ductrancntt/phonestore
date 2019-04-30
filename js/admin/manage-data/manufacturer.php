@@ -152,8 +152,8 @@ function delete($id)
     $result = $conn->excuteQuery($query);
     if ($result == false) {
         $conn->closeConnection();
-        return array("error" => 1, "message" => "Delete product failed");
+        return array("error" => 1, "message" => "Delete manufacturer failed");
     }
     $conn->closeConnection();
-    return array("error" => 0, "message" => "Delete product successfully");
+    return array("error" => 0, "message" => "Delete manufacturer successfully");
 }

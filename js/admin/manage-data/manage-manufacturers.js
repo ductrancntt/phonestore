@@ -159,7 +159,7 @@
 
             let check = validateForm(data);
             if (!check.valid){
-                alert(check.message);
+                AlertService.error(check.message)
                 return;
             }
 
@@ -178,8 +178,9 @@
                     if (response.error == 0) {
                         $("#manufacturer-modal").modal('hide');
                         dataTable.ajax.reload(null, false);
+                        AlertService.success(response.message)
                     } else {
-                        alert(response.message)
+                        AlertService.error(response.message)
                     }
                 }
             });
@@ -199,8 +200,9 @@
                     if (response.error == 0) {
                         $("#manufacturer-delete-modal").modal("hide");
                         dataTable.ajax.reload(null, false);
+                        AlertService.success(response.message)
                     } else {
-                        alert(response.message);
+                        AlertService.error(response.message)
                     }
                 }
             })

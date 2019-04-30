@@ -142,13 +142,17 @@ function update($user)
 function toggleEnable($id, $status)
 {
     $query = "UPDATE `user` SET `enable` = $status WHERE `id` = $id";
+    $mess = "Disabled";
+    if ($status == "1" || $status == 1){
+        $mess = "Enable";
+    }
 
     $conn = new Connection();
     $conn->createConnection();
     $result = $conn->excuteQuery($query);
     if ($result == false) {
         $conn->closeConnection();
-        return array("error" => 1, "message" => "Disabled user failed");
+        return array("error" => 1, "message" => "$mess user failed");
     }
-    return array("error" => 0, "message" => "Disabled user successfully");
+    return array("error" => 0, "message" => "$mess user successfully");
 }

@@ -242,7 +242,7 @@
 
         let check = validateForm(account);
         if (!check.valid){
-            alert(check.message);
+            AlertService.error(check.message);
             return;
         }
 
@@ -256,8 +256,9 @@
             if (response.error == 0) {
                 $("#account-modal").modal('hide');
                 accountTable.ajax.reload(null, false);
+                AlertService.success(response.message);
             } else {
-                alert(response.message);
+                AlertService.error(response.message)
             }
         });
 
@@ -274,8 +275,9 @@
             if (response.error == 0) {
                 $("#account-disable-modal").modal('hide');
                 accountTable.ajax.reload(null, false);
+                AlertService.success(response.message);
             } else {
-                alert(response.message);
+                AlertService.error(response.message)
             }
         });
     });
@@ -291,8 +293,9 @@
             if (response.error == 0) {
                 $("#account-enable-modal").modal('hide');
                 accountTable.ajax.reload(null, false);
+                AlertService.success(response.message);
             } else {
-                alert(response.message);
+                AlertService.error(response.message)
             }
         });
     });

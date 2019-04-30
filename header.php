@@ -6,8 +6,12 @@
 <script type="text/javascript" src="./libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="./libs/bootbox/bootbox.all.min.js"></script>
 <script type="text/javascript" src="./libs/ckeditor/ckeditor.js"></script>
+<link rel="stylesheet" href="./libs/bootoast/bootoast.min.css"/>
+<script type="text/javascript" src="./libs/bootoast/bootoast.min.js"></script>
 <link rel="stylesheet" href="./libs/fontawesome/css/all.css"/>
 <link rel="stylesheet" href="./css/main.css"/>
+<script type="text/javascript" src="./js/alert-service.js"></script>
+
 
 <link rel="icon" href="./image/favicon.png">
 <?php if (!isset($_SESSION))
