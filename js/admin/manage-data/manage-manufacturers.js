@@ -135,11 +135,32 @@
             fillModal(null);
         })
 
+        function validateForm(data) {
+            let valid = true;
+            let message = "";
+            if (data.name == "" ||
+                data.address == ""
+            ) {
+                valid = false;
+                message = "Please fill in all required(*) fields!";
+            }
+            return {
+                valid: valid,
+                message: message,
+            }
+        }
+
         $("#save-manufacturer").click(function () {
             let data = {
                 id: $("input[name='manufacturer-id']").val(),
                 name: $("input[name='manufacturer-name']").val(),
                 address: $("textarea[name='manufacturer-address']").val()
+            }
+
+            let check = validateForm(data);
+            if (!check.valid){
+                alert(check.message);
+                return;
             }
 
             let formData = new FormData();

@@ -201,6 +201,22 @@
         }
     }
 
+    function validateForm(data) {
+        let valid = true;
+        let message = "";
+        if (data.name == "" ||
+            data.username == "" ||
+            data.password == ""
+        ) {
+            valid = false;
+            message = "Please fill in all required(*) fields!";
+        }
+        return {
+            valid: valid,
+            message: message,
+        }
+    }
+
     $("#save-account").click(function () {
         let id = $("input[name='id']").val();
         let name = $("input[name='account-name']").val();
@@ -222,6 +238,12 @@
             username: username,
             password: password,
             email: email,
+        }
+
+        let check = validateForm(account);
+        if (!check.valid){
+            alert(check.message);
+            return;
         }
 
         if (id == ""){

@@ -161,7 +161,7 @@
                                 break;
                             }
                         }
-                        if (manu.name){
+                        if (manu.name) {
                             return manu.name;
                         }
                         return "N/A";
@@ -191,8 +191,8 @@
             ],
             drawCallback: function () {
                 $("button.btn.btn-info.btn-table-product").click(function () {
-                    for (let i = 0; i < products.length; i++){
-                        if (products[i].id == $(this).attr("data-id")){
+                    for (let i = 0; i < products.length; i++) {
+                        if (products[i].id == $(this).attr("data-id")) {
                             fillModal(products[i]);
                             break;
                         }
@@ -205,9 +205,9 @@
         });
     }
 
-    function fillModal(data){
+    function fillModal(data) {
         image = null;
-        if (data == null){
+        if (data == null) {
             $("#product-modal-title").text("Add Product");
             $("input[name='id']").val("");
             $("input[name='product-name']").val("");
@@ -232,8 +232,28 @@
         }
     }
 
+    function validateForm(data) {
+        let valid = true;
+        let message = "";
+        if (data.name == "" ||
+            data.price == "" ||
+            data.description == "" ||
+            data.screen_size == "" ||
+            data.memory == "" ||
+            data.chipset == "" ||
+            data.manufacturer_id == "" ||
+            data.quantity == ""
+        ) {
+            valid = false;
+            message = "Please fill in all required(*) fields!";
+        }
+        return {
+            valid: valid,
+            message: message,
+        }
+    }
+
     $("#save-product").click(function () {
-        console.log("click");
         let id = $("input[name='id']").val();
         let name = $("input[name='product-name']").val();
         let price = $("input[name='price']").val();
@@ -255,6 +275,12 @@
             manufacturer_id: manufacturer_id,
             quantity: quantity,
             image: null,
+        }
+
+        let check = validateForm(product);
+        if (!check.valid) {
+            alert(check.message);
+            return;
         }
 
         let formData = new FormData();
@@ -294,8 +320,8 @@
             delete: 'delete',
             id: selectedId
         };
-        $.post(productUrl, params , function (response) {
-            if (response.error == 0){
+        $.post(productUrl, params, function (response) {
+            if (response.error == 0) {
                 $("#product-delete-modal").modal('hide');
                 productTable.ajax.reload(null, false);
             } else {
