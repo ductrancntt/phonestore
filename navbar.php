@@ -128,6 +128,9 @@
 
                 let productId = $(this).data("id");
                 let quantity = $("#quantity-input").val();
+                if(!quantity){
+                    quantity = 1;
+                }
 
                 $.ajax({
                     url: './service/addToCart.php?id='+productId+'&quantity='+quantity,
