@@ -3,15 +3,23 @@
 })(jQuery);
 
 function loadAccountsPage() {
-    $("#content").load("/js/admin/manage-data/manage-accounts.php");
+    let url = "/js/admin/manage-data/manage-accounts.php?cacheBuster="+ (new Date()).getTime();
+    $("#content").load(url);
 }
 
 function loadProductsPage() {
-    $("#content").load("/js/admin/manage-data/manage-products.php");
+    let url = "/js/admin/manage-data/manage-products.php?cacheBuster="+ (new Date()).getTime();
+    $("#content").load(url);
 }
 
 function loadManufacturersPage() {
-    $("#content").load("/js/admin/manage-data/manage-manufacturers.php");
+    let url = "/js/admin/manage-data/manage-manufacturers.php?cacheBuster="+ (new Date()).getTime();
+    $("#content").load(url);
+}
+
+function loadInvoicesPage() {
+    let url = "/js/admin/manage-data/manage-invoices.php?cacheBuster="+ (new Date()).getTime();
+    $("#content").load(url);
 }
 
 loadAccountsPage();

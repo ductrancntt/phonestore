@@ -8,7 +8,7 @@
     <div class="card-body">
         <div class="row">
             <div class="input-group mb-3 col-md-6">
-                <input type="text" class="form-control font-responsive" placeholder="Account Name"
+                <input type="text" class="form-control font-responsive" placeholder="Username"
                        id="account-search-input">
                 <div class="input-group-append">
                     <button class="btn btn-primary font-responsive" type="button" style="width: 100px;"

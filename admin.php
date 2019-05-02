@@ -71,6 +71,12 @@ include "navbar.php";
                 <span>Products</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript: loadInvoicesPage()">
+                <i class="fas fa-money-bill"></i>
+                <span>Invoices</span>
+            </a>
+        </li>
     </ul>
 
     <div id="content-wrapper" class="d-flex flex-column" style="padding-top: 15px">
