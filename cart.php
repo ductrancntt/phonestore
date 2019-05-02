@@ -112,7 +112,7 @@ function getProductById($id)
                     </dl>
                     <hr>
                     <input <?php if(count($_SESSION["userCart"]) == 0) echo "disabled"; ?> type="button"
-                                                                                           onclick="window.location.href = './checkout.php?diachi=Hanoi'" class="btn btn-primary btn-block" value="Check Out">
+                         onclick="thanhtoan()" class="btn btn-primary btn-block" value="Check Out">
 
                 </aside> <!-- col.// -->
             </div>
@@ -120,7 +120,87 @@ function getProductById($id)
         </div> <!-- container .//  -->
     </section>
 </div>
+<?php 
+    require_once "./service/getProvice.php"
+
+?>
 <script>
+    let tinhThanh = <?php echo getProvice(); ?> 
+    let option = '';
+    tinhThanh.forEach(function(e){
+        option += `<option value="${e.matp}">${e.name}</option>`;
+    })
+    function getQuanHuyen(){
+        let id = $('#tp').val();
+        console.log(id);
+        
+        $.ajax({
+            url: './service/getDistrict.php?id='+id,
+            type: 'GET',
+            success: function(res){
+                html = ''
+                JSON.parse(res).forEach(function(e){
+                    html += `<option value='${e.maqh}'>${e.name}</option>`
+                    $('#huyen').html(html)
+                })
+            }
+        })
+    }
+    function thanhtoan(){
+        bootbox.dialog({
+            title: 'Ship Address',
+            message: `
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text input-title">Province&nbsp;<span style="color: red">*</span></span>
+                    </div>
+                    <select onchange="getQuanHuyen()" class="form-control font-responsive" id="tp">
+                    ${option}
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text input-title">District&nbsp;<span style="color: red">*</span></span>
+                    </div>
+                    <select class="form-control font-responsive" id="huyen">
+                        
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                        <span class="input-group-text input-title">Home Address&nbsp;<span style="color: red">*</span></span>
+                    </div>
+                    <input id="addr" title="Home Address" class="form-control font-responsive">
+                </div>
+            `,
+            buttons:{
+                cancel: {
+                    label: "Cancel",
+                    className: 'btn-danger',
+                    callback: function(){
+                    }
+                },
+                ok: {
+                    label: "OK",
+                    className: 'btn-success',
+                    callback: function(){
+                        let addr = $('#addr').val().trim();
+                        let tp = $("#tp option:selected").text().trim();
+                        let huyen = $('#huyen option:selected').text().trim();
+                        if(!addr){
+                            AlertService.error("Please fill all required fields(*)");
+                            return false;
+                        }
+                        let t = addr+', '+huyen+', '+ tp;
+                        window.location.href = './checkout.php?diachi='+ t
+                    }
+                },
+            },
+            closeButton: false
+        });
+        getQuanHuyen()
+        
+    }
     $(document).ready(function(){
         let url = new URL(window.location.href);
         let success = url.searchParams.get("success");
