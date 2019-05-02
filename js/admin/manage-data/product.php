@@ -145,9 +145,17 @@ function update($entity)
 
 function delete($id)
 {
+    $checkQuery = "SELECT * FROM `item` WHERE `product_id` = $id";
     $query = "UPDATE `product` SET `deleted` = '1' WHERE `id` = $id";
     $conn = new Connection();
     $conn->createConnection();
+
+    $checkResult = $conn->excuteQuery($checkQuery);
+    if ($checkResult->num_rows > 0){
+        $conn->closeConnection();
+        return array("error" => 1, "message" => "Can't delete product because it has been ordered");
+    }
+
     $result = $conn->excuteQuery($query);
     if ($result == false) {
         $conn->closeConnection();
