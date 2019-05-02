@@ -111,7 +111,7 @@
                 },
                 {
                     "render": function (data) {
-                        return data.name;
+                        return "<a target='_blank' href='./product-detail.php?id=" + data.id + "'>" + data.name + "</a>";
                     },
                     "targets": 1
                 },
@@ -244,9 +244,33 @@
             data.manufacturer_id == "" ||
             data.quantity == ""
         ) {
-            valid = false;
-            message = "Please fill in all required(*) fields!";
+            return {
+                valid: false,
+                message: "Please fill in all required(*) fields!",
+            }
         }
+
+        if (data.price <= 0){
+            return {
+                valid: false,
+                message: "Price must greater than 0",
+            }
+        }
+
+        if (data.quantity <= 0){
+            return {
+                valid: false,
+                message: "Quantity must greater than 0",
+            }
+        }
+
+        if (data.screen_size <= 0){
+            return {
+                valid: false,
+                message: "Screen size must greater than 0",
+            }
+        }
+
         return {
             valid: valid,
             message: message,
@@ -350,6 +374,11 @@
 
     $("#image-input").change(function () {
         image = this.files[0];
+        let fileName = $(this).val().split("\\").pop();
+        if (fileName.length > 30) {
+            fileName = fileName.substring(0, 20) + '...';
+        }
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 
     loadManufacturers();

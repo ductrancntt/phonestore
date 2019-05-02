@@ -3,16 +3,15 @@
 })(jQuery);
 
 function loadAccountsPage() {
-    $("#content").load("/js/admin/manage-data/manage-accounts.html");
+    $("#content").load("/js/admin/manage-data/manage-accounts.php");
 }
 
 function loadProductsPage() {
-    $("#content").load("/js/admin/manage-data/manage-products.html");
+    $("#content").load("/js/admin/manage-data/manage-products.php");
 }
 
 function loadManufacturersPage() {
-    $("#content").load("/js/admin/manage-data/manage-manufacturers.html");
+    $("#content").load("/js/admin/manage-data/manage-manufacturers.php");
 }
-
 
 loadAccountsPage();

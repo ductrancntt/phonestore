@@ -221,6 +221,11 @@
 
         $("#image-input").change(function () {
             image = this.files[0];
+            let fileName = $(this).val().split("\\").pop();
+            if (fileName.length > 30){
+                fileName = fileName.substring(0,20) + '...';
+            }
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
 
     }

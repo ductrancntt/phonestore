@@ -146,7 +146,7 @@
                             "<i class='fas fa-pen'></i>" +
                             "</button>" +
                             "<button style='width: 40px;' type='button' class='btn btn-danger btn-table-employee font-responsive' data-id='" + data.id + "' data-toggle='modal' data-target='#account-disable-modal'>" +
-                            "<i class='fas fa-times'></i>" +
+                            "<i class='fas fa-ban'></i>" +
                             "</button>" +
                             "</div>";
                     },
@@ -210,7 +210,26 @@
         ) {
             valid = false;
             message = "Please fill in all required(*) fields!";
+            return {
+                valid: valid,
+                message: message,
+            }
         }
+
+        if (data.username.length < 4 || data.username.length > 16){
+            return {
+                valid: false,
+                message: "Username must contains 4-16 characters",
+            }
+        }
+
+        if (data.password.length < 4 || data.password.length > 16){
+            return {
+                valid: false,
+                message: "Password must contains 4-16 characters",
+            }
+        }
+
         return {
             valid: valid,
             message: message,
