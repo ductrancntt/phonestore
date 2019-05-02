@@ -9,7 +9,11 @@
             $("#password-error").css("display", "");
         } else {
             $.post("./service/changePassword.php", {password: password, newPassword: newPassword}, function () {
-                window.location = "./home.php";
+                AlertService.success("Change password successfully!<br> Redirecting to homepage...");
+                $("#change-password-button").attr("disabled", "disabled");
+                setTimeout(function () {
+                    window.location = "./home.php";
+                }, 2000);
             }).fail(function () {
                 $("#password-error").text("Wrong Password!")
                 $("#password-error").css("display", "");

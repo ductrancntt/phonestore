@@ -27,11 +27,13 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign In</h5>
                         <?php
-                            if (isset($_GET['error']) && $_GET['error']):
-                        ?>
-                                <h6 class='text-center' style='color: red; margin-bottom: 15px;'>Wrong Username or Password!</h6>
-                        <?php
-                            endif;
+                            if (isset($_GET['error'])){
+                                if ($_GET['error'] == 403){
+                                    echo "<h6 class='text-center' style='color: red; margin-bottom: 15px;'>Account has been deactivated!</h6>";
+                                } else {
+                                    echo "<h6 class='text-center' style='color: red; margin-bottom: 15px;'>Wrong Username or Password!</h6>";
+                                }
+                            }
                         ?>
                         <form class="form-sign-in" method="POST" action="./service/doSignIn.php">
                             <div class="form-label-group">

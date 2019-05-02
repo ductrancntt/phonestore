@@ -187,7 +187,7 @@ $connection->closeConnection();
                                             
                                             <button type="button" class="btn btn-primary btn-add-to-cart"
                                                     style="width: 60%"
-                                                    data-id="'.$product["id"].'" '.(!isset($_SESSION['signedIn']) ? "disabled" : "").'>
+                                                    data-id="'.$product["id"].'">
                                                 <i class="fas fa-cart-plus"></i>
                                                 <span> CART</span>
                                             </button>

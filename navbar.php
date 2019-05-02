@@ -126,6 +126,11 @@
         $(document).ready(function () {
             $("button.btn.btn-primary.btn-add-to-cart").click(function () {
 
+                let check = <?php echo isset($_SESSION['signedIn']) ? 1 : 0; ?> ? 1 : 0;
+                if (!check){
+                    window.location.href = "./signin.php";
+                }
+
                 let productId = $(this).data("id");
                 let quantity = $("#quantity-input").val();
                 if(!quantity){
@@ -142,7 +147,7 @@
                         else if(total == 0)
                             $("#number-cart").text('');
                         else{
-                            bootbox.alert("Mặt hàng không còn đủ số lượng. Vui lòng kiểm tra lại");
+                            AlertService.error("Sorry! There is not enough product in stock.");
                         }
                     }
                 })

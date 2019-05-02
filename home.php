@@ -124,8 +124,7 @@ $connection->closeConnection();
                             <a href='./product-detail.php?id=" . $product["id"] . "' class='title'>" . $product["name"] . "</a>
                             <div class='action-wrap'>
                                 <button type='button' class='btn btn-primary btn-sm float-right btn-add-to-cart'
-                                        data-id='" . $product["id"] . "' 
-                                " . ((isset($_SESSION['signedIn']) && $_SESSION['signedIn']) ? '' : ' disabled') . ">
+                                        data-id='" . $product["id"] . "'>
                                 <i class='fas fa-cart-plus'></i>
                                 <span> ADD</span>
                                 </button>
@@ -163,8 +162,7 @@ $connection->closeConnection();
                             <a href='./product-detail.php?id=" . $product["id"] . "' class='title'>" . $product["name"] . "</a>
                             <div class='action-wrap'>
                                 <button type='button' class='btn btn-primary btn-sm float-right btn-add-to-cart'
-                                        data-id='" . $product["id"] . "' 
-                                " . ((isset($_SESSION['signedIn']) && $_SESSION['signedIn']) ? '' : ' disabled') . ">
+                                        data-id='" . $product["id"] . "'>
                                 <i class='fas fa-cart-plus'></i>
                                 <span> ADD</span>
                                 </button>

@@ -43,7 +43,7 @@ function getProductById($id)
 
 ?>
 <div>
-    <section class="section-content bg padding-y border-top" style="height: 100vh">
+    <section class="section-content bg padding-y border-top" style="height: 100vh; overflow-y: scroll">
         <div class="container">
 
             <div class="row">

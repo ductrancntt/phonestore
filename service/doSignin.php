@@ -18,9 +18,10 @@
     
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                if ($row["enable"] == false) {
+                if ($row["enable"] == "0") {
                     $connection->closeConnection();
-                    header("location:../signin.php?error=true");
+                    header("location:../signin.php?error=403");
+                    return;
                 }
 
                 $_SESSION['signedIn'] = true;

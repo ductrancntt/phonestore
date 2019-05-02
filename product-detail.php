@@ -139,16 +139,14 @@ if (isset($_GET["id"])) {
                                                 </div>
                                                 <input id="quantity-input" type="number" min="1" value="1"
                                                        class="form-control" style="text-align: center;"
-                                                    <?php echo 'data-id="' . $_GET["id"] . '"'; ?>
-                                                    <?php if (!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
+                                                    <?php echo 'data-id="' . $_GET["id"] . '"'; ?>>
                                             </div>
                                         </div>
                                         <div class="col-sm-5">
 
                                             <button type="button" class="btn btn-primary btn-add-to-cart"
                                                     style="width: 60%"
-                                                <?php echo 'data-id="' . $_GET["id"] . '"'; ?>
-                                                <?php if (!isset($_SESSION['signedIn'])) echo 'disabled'; ?>>
+                                                <?php echo 'data-id="' . $_GET["id"] . '"'; ?>>
                                                 <i class='fas fa-cart-plus'></i>
                                                 <span onclick=""> CART</span>
                                             </button>
