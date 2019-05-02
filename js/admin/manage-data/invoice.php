@@ -71,7 +71,7 @@ function getAll($params)
 
     $response["totalElements"] = $count->num_rows;
     while ($row = $data->fetch_assoc()) {
-        $row["created_date"] = DateTime::createFromFormat('YmdHis', $row["created_date"])->format('d/m/Y H:i:s');
+        $row["created_date"] = DateTime::createFromFormat('YmdHis', $row["created_date"])->format('d/m/Y');
         array_push($response["data"], $row);
     }
     $conn->closeConnection();
