@@ -178,7 +178,7 @@ $connection->closeConnection();
                                 <aside class="col-sm-3 border-left">
                                     <div class="action-wrap">
                                         <div class="price-wrap h4">
-                                            <span class="price"></span>
+                                            <span class="price">'.number_format($product["price"]).' đ</span>
                                             <del class="price-old"></del>
                                         </div>
                                         <p class="text-success">Free shipping</p>
