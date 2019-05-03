@@ -9,29 +9,34 @@
         let fullname = $("#fullname").val().trim();
         let email = $("#email").val().trim();
 
-        if ((password == confirmPassword)) {
-            if (username.length != 0 && email.length != 0 && password.length != 0 && fullname.length != 0) {
-                let user = {
-                    username: username,
-                    password: password,
-                    phone: phone,
-                    address: address,
-                    name: fullname,
-                    email: email
-                }
+        if (validateEmail(email)) {
+            if ((password == confirmPassword)) {
+                if (username.length != 0 && password.length != 0 && fullname.length != 0) {
+                    let user = {
+                        username: username,
+                        password: password,
+                        phone: phone,
+                        address: address,
+                        name: fullname,
+                        email: email
+                    }
 
-                $.post('./service/doSignUp.php', {user: JSON.stringify(user)}, function(response) {
-                    window.location = "./signin.php";
-                }).fail(function() {
-                    $("#error").text("Please choose another name!");
+                    $.post('./service/doSignUp.php', {user: JSON.stringify(user)}, function(response) {
+                        window.location = "./signin.php";
+                    }).fail(function() {
+                        $("#error").text("Please choose another name!");
+                        $("#error").css("display", "");
+                    });
+                } else {
+                    $("#error").text("Required fields are empty!");
                     $("#error").css("display", "");
-                });
+                }
             } else {
-                $("#error").text("Required fields are empty!");
+                $("#error").text("Passwords are not matched!");
                 $("#error").css("display", "");
             }
         } else {
-            $("#error").text("Passwords are not matched!");
+            $("#error").text("Invalid Email!");
             $("#error").css("display", "");
         }
     });

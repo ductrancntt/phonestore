@@ -155,6 +155,17 @@
             });
         })
 
+        function validateEmail(email) {
+            if (email.length == 0)
+                return false;
 
+            if (email.indexOf("@") == -1 || email.split('@').length > 2)
+                return false;
+            let after = email.split("@")[1];
+            if (after.indexOf(".") == -1)
+                return false;
+
+            return true;
+        }
     </script>
 </nav>
