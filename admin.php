@@ -67,7 +67,7 @@ include "navbar.php";
         </li>
         <li class="nav-item">
             <a class="nav-link" href="javascript: loadProductsPage()">
-                <i class="fas fa-coins"></i>
+                <i class="fas fa-mobile-alt"></i>
                 <span>Products</span>
             </a>
         </li>
@@ -75,6 +75,12 @@ include "navbar.php";
             <a class="nav-link" href="javascript: loadInvoicesPage()">
                 <i class="fas fa-money-bill"></i>
                 <span>Invoices</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript: loadBannerPage()">
+                <i class="fas fa-image"></i>
+                <span>Banner</span>
             </a>
         </li>
     </ul>

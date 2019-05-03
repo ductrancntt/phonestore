@@ -236,6 +236,20 @@
         }
     }
 
+    function validateEmail(email) {
+        if (email.length == 0)
+            return false;
+
+        if (email.indexOf("@") == -1 || email.split('@').length > 2)
+            return false;
+        let after = email.split("@")[1];
+        if (after.indexOf(".") == -1)
+            return false;
+
+        return true;
+    }
+
+
     $("#save-account").click(function () {
         let id = $("input[name='id']").val();
         let name = $("input[name='account-name']").val();
@@ -262,6 +276,10 @@
         let check = validateForm(account);
         if (!check.valid){
             AlertService.error(check.message);
+            return;
+        }
+        if (!validateEmail(email)){
+            AlertService.error("Email is not valid");
             return;
         }
 

@@ -88,6 +88,7 @@ if (isset($_SESSION["user_id"])) {
                     <tr>
                         <th scope="col">ID</th>
                         <th style="text-align: right" scope="col">Created Date</th>
+                        <th scope="col">Ship Address</th>
                         <th  style="text-align: right" scope="col">Total</th>
                         <th style="text-align: right">Status</th>
                         <th></th>
@@ -101,6 +102,7 @@ if (isset($_SESSION["user_id"])) {
                         echo '<tr>
                             <th>' . $invoice["id"] . '</th>
                             <th style="text-align: right">' . $ymd . '</th>
+                            <th>' . $invoice["ship_address"] . '</th>
                             <th  style="text-align: right">' . number_format($invoice["total"]) . ' đ</th>
                             <th style="text-align: right"><button type="button" disabled class="btn '
                             . ($invoice["status"] == 0 ? 'btn-primary"> Ordered' : ($invoice["status"] == 1 ? 'btn-warning"> Delivering' : ($invoice["status"] == 2 ? 'btn-success"> Delivered' : 'btn-danger"> Cancelled'))) .

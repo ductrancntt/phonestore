@@ -202,4 +202,60 @@
     });
 
     renderTable();
+
+    $("#export-button").unbind('click');
+    $("#export-button").click(function () {
+        let titleRow = ["ID","Created Date","Username", "Ship Address", "Status", "Total"];
+        let BOM = "\uFEFF";
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += BOM;
+        csvContent += titleRow + "\n";
+        invoices.forEach(e => {
+            let row = [];
+            row.push(e.id);
+            row.push(e.created_date);
+
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == e.user_id){
+                    row.push(users[i].username);
+                }
+            }
+            let add = e.ship_address.split(",");
+            let address = "";
+            add.forEach(e => {
+                address += e + " - ";
+            })
+            row.push(address);
+            switch (parseInt(e.status)) {
+                case 0: {
+                    row.push("Ordered");
+                    break;
+                }
+                case 1: {
+                    row.push("Delivering");
+                    break;
+                }
+                case 2: {
+                    row.push("Delivered");
+                    break;
+                }
+                case 3: {
+                    row.push("Canceled");
+                    break;
+                }
+            }
+
+            row.push(e.total);
+            csvContent += row + "\n";
+        })
+
+        let downloadLink = document.createElement("a");
+        downloadLink.href = csvContent;
+        downloadLink.download = "export.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+
+    })
 })(jQuery);
