@@ -1,7 +1,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 row">
         <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-money-bill"></i>
             <span>INVOICES</span>
         </h6>
     </div>
@@ -17,16 +17,12 @@
                     </button>
                 </div>
             </div>
-<!--            <div class="col-md-6">-->
-<!--                    <div class="input-group">-->
-<!--                        <input type="text" id="date-range-picker" class="form-control font-responsive" placeholder="Date Range" style="text-align: center;">-->
-<!--                        <div class="input-group-append">-->
-<!--                            <button class="btn btn-primary font-responsive" type="button" style="width: 100px;" id="analyze-button">-->
-<!--                                <i class="fas fa-chart-line"></i>-->
-<!--                            </button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--            </div>-->
+            <div class="col-md-6">
+                <button class="btn btn-outline-primary font-responsive" type="button" style="float: right;" id="export-button">
+                    <i class="fas fa-download"></i>
+                    <span>Export</span>
+                </button>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-hover" id="invoice-table" width="100%" cellspacing="0">

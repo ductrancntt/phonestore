@@ -83,7 +83,7 @@ function getProductById($id)
                                                 </figure>
                                             </td>
                                             <td>
-                                                <input type="number" class="form-control" disabled value="' . $item["quantity"] . '">
+                                                <input min="1" type="number" id="product_' . $item["id"] . '" onchange="javascript:changeNumber(' . $item["id"] .')" class="form-control" value="' . $item["quantity"] . '">
                                             </td>
                                             <td>
                                                 <div class="price-wrap">
@@ -125,6 +125,26 @@ function getProductById($id)
 
 ?>
 <script>
+    let changeNumber = function(id){
+        let quantity = $("#product_" + id).val();
+
+        if (quantity <= 0){
+            $("#product_" + id).val(1);
+            quantity = 1;
+        }
+        let params = {
+            change: "change",
+            id: id,
+            quantity: quantity
+        }
+        if (id){
+            console.log("sent");
+            $.post("./service/updateSession.php", params, function (res) {
+                console.log(res);
+                window.location.href = "./cart.php";
+            })
+        }
+    }
     let tinhThanh = <?php echo getProvice(); ?> 
     let option = '';
     tinhThanh.forEach(function(e){

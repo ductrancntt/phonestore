@@ -22,4 +22,9 @@ function loadInvoicesPage() {
     $("#content").load(url);
 }
 
+function loadBannerPage() {
+    let url = "/js/admin/manage-data/manage-banner.php?cacheBuster="+ (new Date()).getTime();
+    $("#content").load(url);
+}
+
 loadAccountsPage();

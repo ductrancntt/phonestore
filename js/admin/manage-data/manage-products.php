@@ -18,8 +18,8 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <button class="btn btn-outline-primary font-responsive" type="button" style="float: right;"
-                        id="product-refresh-button">
+
+                <button class="btn btn-outline-primary font-responsive" type="button" style="float: right;" id="product-refresh-button">
                     <i class="fas fa-sync-alt"></i>
                     <span>REFRESH</span>
                 </button>
